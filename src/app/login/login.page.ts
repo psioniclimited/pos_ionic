@@ -25,7 +25,7 @@ export class LoginPage implements OnInit {
 
     private formInit() {
         this.loginForm = new FormGroup({
-            email: new FormControl('admin@admin.com', Validators.required),
+            email: new FormControl('raihan@psionic.io', Validators.required),
             password: new FormControl('secret', Validators.required)
         });
     }
