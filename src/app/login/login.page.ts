@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {NativeStorage} from '@ionic-native/native-storage/ngx';
 import {AuthService} from '../service/auth.service';
+import {Creds} from '../_models/Creds';
 
 @Component({
     selector: 'app-login',
@@ -34,7 +35,7 @@ export class LoginPage implements OnInit {
             );
             this.authenticationService.login(creds).then(data => {
                 console.log(data);
-                this.storage.setItem('TOKEN', data.token);
+                // this.storage.setItem('TOKEN', data.token);
             });
         }
     }
