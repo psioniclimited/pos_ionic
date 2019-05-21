@@ -18,7 +18,7 @@ export class AuthService {
     }
 
     login(creds: Creds): any {
-        return this.http.post('http://192.168.0.101:8000/user/login', creds, {}).then(data => {
+        return this.http.post('http://192.168.0.104:8000/user/login', creds, {}).then(data => {
             const response = JSON.parse(data.data);
             this.storage.setItem('TOKEN', response.token).then(() => {
                 console.log('token stored');

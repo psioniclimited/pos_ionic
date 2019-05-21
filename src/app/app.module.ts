@@ -10,6 +10,7 @@ import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {HTTP} from '@ionic-native/http/ngx';
 import {NativeStorage} from '@ionic-native/native-storage/ngx';
+import { SQLite } from '@ionic-native/sqlite/ngx';
 
 @NgModule({
     declarations: [AppComponent],
@@ -20,6 +21,7 @@ import {NativeStorage} from '@ionic-native/native-storage/ngx';
         SplashScreen,
         HTTP,
         NativeStorage,
+        SQLite,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     ],
     bootstrap: [AppComponent]
