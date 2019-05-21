@@ -4,6 +4,7 @@ import {NativeStorage} from '@ionic-native/native-storage/ngx';
 import {AuthService} from '../service/auth.service';
 import {Creds} from '../_models/Creds';
 import {Router} from '@angular/router';
+import {DatabaseService} from '../service/database.service';
 
 @Component({
     selector: 'app-login',
