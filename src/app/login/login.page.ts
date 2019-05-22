@@ -41,7 +41,7 @@ export class LoginPage implements OnInit {
             });
             this.authenticationService.authenticationState.subscribe(state => {
                 if (state) {
-                    this.router.navigate(['pos']);
+                    this.router.navigate(['menu']);
                 }
             });
         }

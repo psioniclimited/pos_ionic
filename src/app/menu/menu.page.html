@@ -1,0 +1,25 @@
+<ion-split-pane>
+    <ion-menu contentId="content">
+        <ion-header>
+            <ion-tab-bar color="primary">
+                <ion-title>Menu</ion-title>
+            </ion-tab-bar>
+        </ion-header>
+
+        <ion-content>
+            <ion-list>
+                <ion-menu-toggle *ngFor="let p of pages">
+                    <ion-item [routerLink]="p.url" routerDirection="root" routerLinkActive="active">
+                        <ion-icon [name]="p.icon"></ion-icon>
+                        <ion-label>
+                            {{p.title}}
+                        </ion-label>
+                    </ion-item>
+                </ion-menu-toggle>
+
+            </ion-list>
+        </ion-content>
+    </ion-menu>
+
+    <ion-router-outlet id="content" main></ion-router-outlet>
+</ion-split-pane>

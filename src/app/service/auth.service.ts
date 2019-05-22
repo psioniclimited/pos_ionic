@@ -29,6 +29,7 @@ export class AuthService {
             return response;
         })
             .catch(error => {
+                console.log('server error');
                 console.log(error);
             });
     }
