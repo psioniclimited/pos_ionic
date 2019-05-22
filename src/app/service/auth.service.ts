@@ -4,12 +4,14 @@ import {HTTP} from '@ionic-native/http/ngx';
 import {Platform} from '@ionic/angular';
 import {NativeStorage} from '@ionic-native/native-storage/ngx';
 import {Creds} from '../_models/Creds';
+import {ENV} from '../_config/config';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
     authenticationState = new BehaviorSubject(false);
+    apiUrl = ENV.API_ENDPOINT + 'user/login';
 
     constructor(private http: HTTP, private storage: NativeStorage, private plt: Platform) {
         this.plt.ready().then(() => {
@@ -18,10 +20,11 @@ export class AuthService {
     }
 
     login(creds: Creds): any {
-        return this.http.post('http://192.168.0.104:8000/user/login', creds, {}).then(data => {
+        return this.http.post(this.apiUrl, creds, {}).then(data => {
             const response = JSON.parse(data.data);
             this.storage.setItem('TOKEN', response.token).then(() => {
                 console.log('token stored');
+                this.authenticationState.next(true);
             });
             return response;
         })

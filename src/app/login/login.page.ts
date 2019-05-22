@@ -4,7 +4,6 @@ import {NativeStorage} from '@ionic-native/native-storage/ngx';
 import {AuthService} from '../service/auth.service';
 import {Creds} from '../_models/Creds';
 import {Router} from '@angular/router';
-import {DatabaseService} from '../service/database.service';
 
 @Component({
     selector: 'app-login',
@@ -26,18 +25,18 @@ export class LoginPage implements OnInit {
 
     private formInit() {
         this.loginForm = new FormGroup({
-            email: new FormControl('raihan@psionic.io', Validators.required),
-            password: new FormControl('secret', Validators.required)
+            email: new FormControl('riger400@gmail.com', Validators.required),
+            password: new FormControl('qwerasdf', Validators.required)
         });
     }
 
-    onSubmit() {
+     async onSubmit() {
         if (this.loginForm.valid) {
             const creds = new Creds(
                 this.loginForm.value.email,
                 this.loginForm.value.password
             );
-            this.authenticationService.login(creds).then(data => {
+            await this.authenticationService.login(creds).then(data => {
                 console.log(data);
             });
             this.authenticationService.authenticationState.subscribe(state => {
