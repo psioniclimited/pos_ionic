@@ -1,3 +1,7 @@
-<p>
-  category-list works!
-</p>
+<div class="categories">
+    <div class="list-categories">
+        <ion-button class="category" [class.selected-category]=item.selected *ngFor="let item of items">
+            {{ item }}
+        </ion-button>
+    </div>
+</div>

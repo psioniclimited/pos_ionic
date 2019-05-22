@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { PosPage } from './pos.page';
 import {TopbarComponent} from '../components/topbar/topbar.component';
 import {ProductListComponent} from '../components/product-list/product-list.component';
+import {CategoryListComponent} from '../components/category-list/category-list.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [PosPage, TopbarComponent, ProductListComponent]
+  declarations: [PosPage, TopbarComponent, ProductListComponent, CategoryListComponent]
 })
 export class PosPageModule {}

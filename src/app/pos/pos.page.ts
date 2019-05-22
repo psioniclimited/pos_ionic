@@ -8,16 +8,16 @@ import {UpdateService} from '../service/update.service';
 })
 export class PosPage implements OnInit {
 
-    constructor(private updateService: UpdateService) {
+    constructor() {
     }
 
     ngOnInit() {
     }
 
     public async updateMenu() {
-        await this.updateService.index().then().catch((error) => {
-            console.log(error);
-        });
+        // await this.updateService.index().then().catch((error) => {
+        //     console.log(error);
+        // });
     }
 
 }

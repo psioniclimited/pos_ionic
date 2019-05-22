@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./category-list.component.scss'],
 })
 export class CategoryListComponent implements OnInit {
-
+  private items = ['test', 'test2', 'test3', 'test4', 'test', 'test2', 'test3', 'test4', 'test', 'test2', 'test3', 'test4', 'test', 'test2', 'test3', 'test4'];
   constructor() { }
 
   ngOnInit() {}
