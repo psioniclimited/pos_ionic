@@ -9,7 +9,7 @@ import {HTTP} from '@ionic-native/http/ngx';
 @Injectable({
     providedIn: 'root'
 })
-export class CategoryService {
+export class UpdateService {
     private db: SQLiteObject;
     private isOpen: boolean;
     // need to change this url

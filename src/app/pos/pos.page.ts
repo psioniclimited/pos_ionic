@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CategoryService} from '../service/category.service';
+import {UpdateService} from '../service/update.service';
 
 @Component({
     selector: 'app-pos',
@@ -8,14 +8,14 @@ import {CategoryService} from '../service/category.service';
 })
 export class PosPage implements OnInit {
 
-    constructor(private categoryService: CategoryService) {
+    constructor(private updateService: UpdateService) {
     }
 
     ngOnInit() {
     }
 
     public async updateMenu() {
-        await this.categoryService.index().then().catch((error) => {
+        await this.updateService.index().then().catch((error) => {
             console.log(error);
         });
     }
