@@ -30,12 +30,20 @@ export class DatabaseService {
         await this.createProductsTable();
         await this.createAddons();
         await this.createOptions();
-        await this.createOptionProduct();
-        await this.createProductAddon();
         await this.createClient();
         await this.createOrders();
         await this.createOrderDetails();
         this.dbReady.next(true);
+    }
+
+    public async unseed() {
+        await this.deleteCategories();
+        await this.deleteProducts();
+        await this.deleteAddons();
+        await this.deleteOptions();
+        // await this.deleteClients();
+        // await this.deleteOrders();
+        // await this.deleteOrderDetails();
     }
 
     private async createCategoriesTable() {
@@ -94,28 +102,6 @@ export class DatabaseService {
         });
     }
 
-    private async createOptionProduct() {
-        const sql = 'CREATE TABLE IF NOT EXISTS option_product(' +
-            'option_id INTEGER NOT NULL, ' +
-            'product_id INTEGER NOT NULL)';
-
-        this.database.executeSql(sql, []).then().catch((error) => {
-            console.log('option_product not created');
-            console.log(error);
-        });
-    }
-
-    private async createProductAddon() {
-        const sql = 'CREATE TABLE IF NOT EXISTS product_addon(' +
-            'product_id INTEGER NOT NULL,' +
-            'addon_id INTEGER NOT NULL)';
-
-        this.database.executeSql(sql, []).then().catch((error) => {
-            console.log('product_addon not created');
-            console.log(error);
-        });
-    }
-
     private async createClient() {
         const sql = 'CREATE TABLE IF NOT EXISTS clients' +
             '(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,' +
@@ -158,6 +144,84 @@ export class DatabaseService {
         this.database.executeSql(sql, []).then().catch((error) => {
             console.log('order_details not created');
             console.log(error);
+        });
+    }
+
+    private async deleteCategories() {
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM categories';
+            this.database.executeSql(sql, []).then((data) => {
+                console.log('deleting categories');
+                resolve(data);
+            }, (error) => {
+                reject(error);
+            });
+        });
+    }
+
+    private async deleteProducts() {
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM products';
+            this.database.executeSql(sql, []).then((data) => {
+                resolve(data);
+            }, (error) => {
+                reject(error);
+            });
+        });
+    }
+
+    private async deleteAddons() {
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM addons';
+            this.database.executeSql(sql, []).then((data) => {
+                resolve(data);
+            }, (error) => {
+                reject(error);
+            });
+        });
+    }
+
+    private async deleteOptions() {
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM options';
+            this.database.executeSql(sql, []).then((data) => {
+                resolve(data);
+            }, (error) => {
+                reject(error);
+            });
+        });
+    }
+
+    private async deleteClients() {
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM clients';
+            this.database.executeSql(sql, []).then((data) => {
+                resolve(data);
+            }, (error) => {
+                reject(error);
+            });
+        });
+    }
+
+    private async deleteOrders() {
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM orders';
+            this.database.executeSql(sql, []).then((data) => {
+                resolve(data);
+            }, (error) => {
+                reject(error);
+            });
+        });
+    }
+
+    private async deleteOrderDetails() {
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM order_details';
+            this.database.executeSql(sql, []).then((data) => {
+                resolve(data);
+            }, (error) => {
+                reject(error);
+            });
         });
     }
 }
