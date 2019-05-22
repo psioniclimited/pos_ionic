@@ -13,7 +13,8 @@ export class CategoryService {
     private db: SQLiteObject;
     private isOpen: boolean;
     // need to change this url
-    private apiUrl = ENV.API_ENDPOINT + '/category';
+    private categoryUrl = ENV.API_ENDPOINT + '/category';
+    private productUrl = ENV.API_ENDPOINT + '/product';
     private categoryId = [];
     private token = '';
 
@@ -77,7 +78,7 @@ export class CategoryService {
 
     private async fetchCategory(params: any, headers: any) {
         return new Promise((resolve, reject) => {
-            this.http.get(this.apiUrl, params, headers).then(async (data) => {
+            this.http.get(this.categoryUrl, params, headers).then(async (data) => {
                 const categories = JSON.parse(data.data);
                 for (let i = 0; i < categories.data.length; i++) {
                     this.categoryId.push(categories.data[i].id);
@@ -103,7 +104,7 @@ export class CategoryService {
     // fetching products form the server
     private async fetchProducts(params: any, headers: any) {
         return new Promise((resolve, reject) => {
-            this.http.get(this.apiUrl, params, headers).then(async (data) => {
+            this.http.get(this.categoryUrl, params, headers).then(async (data) => {
                 const categories = JSON.parse(data.data);
                 for (let i = 0; i < categories.data.length; i++) {
                     this.categoryId.push(categories.data[i].id);

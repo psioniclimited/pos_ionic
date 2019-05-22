@@ -81,8 +81,10 @@ export class DatabaseService {
 
         const sql = 'CREATE TABLE IF NOT EXISTS addons' +
             '(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,' +
-            'name VARCHAR(255), ' +
-            'price DECIMAL(15,2))';
+            'product_id INTEGER NOT NULL,' +
+            'name VARCHAR(255),' +
+            'price DECIMAL(15,2),' +
+            'FOREIGN KEY (product_id) REFERENCES products(id))';
 
         this.database.executeSql(sql, []).then().catch((error) => {
             console.log('addons not created');
@@ -93,8 +95,10 @@ export class DatabaseService {
     private async createOptions() {
         const sql = 'CREATE TABLE IF NOT EXISTS options' +
             '(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,' +
+            'product_id INTEGER NOT NULL,' +
             'type VARCHAR(255), ' +
-            'price DECIMAL(15,2))';
+            'price DECIMAL(15,2),' +
+            'FOREIGN KEY (product_id) REFERENCES products(id))';
 
         this.database.executeSql(sql, []).then().catch((error) => {
             console.log('options not created');
