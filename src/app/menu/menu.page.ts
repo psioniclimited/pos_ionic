@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {UpdateService} from '../service/update.service';
 
 @Component({
     selector: 'app-menu',
@@ -15,10 +16,19 @@ export class MenuPage implements OnInit {
         }
     ];
 
-    constructor() {
+    constructor(private updateService: UpdateService) {
     }
 
     ngOnInit() {
+    }
+
+    update() {
+        console.log('update click');
+        this.updateService.index().then().catch((error) => {
+            console.log('updating error');
+            console.log(error);
+        });
+
     }
 
 }

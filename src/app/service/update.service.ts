@@ -19,7 +19,7 @@ export class UpdateService {
     private token = '';
 
     constructor(private platform: Platform,
-                public sqlStorage: SQLite,
+                private sqlStorage: SQLite,
                 private authService: AuthService,
                 private http: HTTP,
                 private databaseService: DatabaseService) {
@@ -213,7 +213,7 @@ export class UpdateService {
         }));
     }
 
-    getToken() {
+    private getToken() {
         this.authService.getToken().then((data) => {
             this.token = data;
         }).catch((error) => {
