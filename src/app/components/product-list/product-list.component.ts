@@ -37,7 +37,32 @@ export class ProductListComponent implements OnInit {
         {
             name: 'American Burger',
             description: 'will make you attack any country that have oil'
+        },
+        {
+            name: 'American Burger',
+            description: 'will make you attack any country that have oil'
+        },
+        {
+            name: 'American Burger',
+            description: 'will make you attack any country that have oil'
+        },
+        {
+            name: 'American Burger',
+            description: 'will make you attack any country that have oil'
+        },
+        {
+            name: 'American Burger',
+            description: 'will make you attack any country that have oil'
+        },
+        {
+            name: 'American Burger',
+            description: 'will make you attack any country that have oil'
+        },
+        {
+            name: 'American Burger',
+            description: 'will make you attack any country that have oil'
         }
+
     ];
 
     constructor() {
