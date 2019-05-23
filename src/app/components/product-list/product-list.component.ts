@@ -9,13 +9,43 @@ import {IonInfiniteScroll} from '@ionic/angular';
 export class ProductListComponent implements OnInit {
 
     @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
-
+    productList = [
+        {
+            name: 'Smoky Grilled Chicken',
+            description: 'smoky chicken, healthy & tasty'
+        },
+        {
+            name: 'BBQ Pizza',
+            description: 'Pizza that will change your taste bud'
+        },
+        {
+            name: 'American Burger',
+            description: 'will make you attack any country that have oil'
+        },
+        {
+            name: 'American Burger',
+            description: 'will make you attack any country that have oil'
+        },
+        {
+            name: 'American Burger',
+            description: 'will make you attack any country that have oil'
+        },
+        {
+            name: 'American Burger',
+            description: 'will make you attack any country that have oil'
+        },
+        {
+            name: 'American Burger',
+            description: 'will make you attack any country that have oil'
+        }
+    ];
 
     constructor() {
     }
 
     ngOnInit() {
     }
+
     loadData(event) {
         setTimeout(() => {
             console.log('Done');
