@@ -1,9 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Platform} from '@ionic/angular';
 import {SQLite, SQLiteObject} from '@ionic-native/sqlite/ngx';
-import {AuthService} from './auth.service';
-import {HTTP} from '@ionic-native/http/ngx';
-import {DatabaseService} from './database.service';
 import {Category} from '../_models/category';
 
 @Injectable({
@@ -14,13 +10,7 @@ export class CategoryService {
     private db: SQLiteObject;
     private isOpen: boolean;
 
-    constructor(private platform: Platform,
-                private sqlStorage: SQLite,
-                private authService: AuthService,
-                private http: HTTP,
-                private databaseService: DatabaseService) {
-        this.platform.ready().then(() => {
-        });
+    constructor(private sqlStorage: SQLite) {
     }
 
     private async start() {
