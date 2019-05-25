@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {IonInfiniteScroll} from '@ionic/angular';
+import {ProductService} from '../../service/product.service';
 
 @Component({
     selector: 'app-product-list',
@@ -7,6 +8,7 @@ import {IonInfiniteScroll} from '@ionic/angular';
     styleUrls: ['./product-list.component.scss'],
 })
 export class ProductListComponent implements OnInit {
+    categoryId: string;
 
     @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
     productList = [
@@ -65,10 +67,22 @@ export class ProductListComponent implements OnInit {
 
     ];
 
-    constructor() {
+    constructor(private productService: ProductService) {
     }
 
-    ngOnInit() {
+    async ngOnInit() {
+        this.categoryId = 'all';
+        this.productService.selectedCategory.subscribe(async (data) => {
+            this.categoryId = data;
+            console.log('Product List Component');
+            console.log(this.categoryId);
+            await this.productService.getProducts(this.categoryId).then((res) => {
+                console.log(res);
+            }).catch((error) => {
+                console.log(error);
+            });
+        });
+
     }
 
     loadData(event) {

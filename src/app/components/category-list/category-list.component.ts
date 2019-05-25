@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CategoryService} from '../../service/category.service';
 import {Category} from '../../_models/category';
+import {ProductService} from '../../service/product.service';
 
 @Component({
     selector: 'app-category-list',
@@ -8,13 +9,10 @@ import {Category} from '../../_models/category';
     styleUrls: ['./category-list.component.scss'],
 })
 export class CategoryListComponent implements OnInit {
-    private items = ['test', 'test2', 'test3', 'test4', 'test',
-        'test2', 'test3', 'test4', 'test', 'test2',
-        'test3', 'test4', 'test', 'test2', 'test3',
-        'test4'];
     public categories: Category[];
 
-    constructor(private categoryService: CategoryService) {
+    constructor(private categoryService: CategoryService,
+                private productService: ProductService) {
     }
 
     async ngOnInit() {
@@ -23,6 +21,12 @@ export class CategoryListComponent implements OnInit {
         }).catch((error) => {
             console.log(error);
         });
+    }
+
+    selectCategory(data) {
+        console.log('selected data');
+        console.log(data);
+        this.productService.setCategory(data);
     }
 
 
