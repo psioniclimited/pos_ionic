@@ -1,3 +1,6 @@
+import {Addon} from './addon';
+import {Option} from './option';
+
 export class Product {
     id: string;
     categoryId: string;
@@ -7,6 +10,7 @@ export class Product {
     description: string;
     hasAddons: number;
     hasOptions: number;
+    options: Option[];
 
     constructor(
         id: string = '',
