@@ -170,7 +170,7 @@ export class UpdateService {
         return new Promise(((resolve, reject) => {
             const sql = 'INSERT INTO products (id, name, category_id, cost, has_addons, has_options, sale_price, description) ' +
                 'VALUES (?,?,?,?,?,?,?,?)';
-            this.db.executeSql(sql, [data.id, data.name, data.cost, data.has_addons, data.has_options, data.sale_price, data.description])
+            this.db.executeSql(sql, [data.id, data.name, data.category_id, data.cost, data.has_addons, data.has_options, data.sale_price, data.description])
                 .then((success) => {
                     resolve(success);
                 }, (error) => {
