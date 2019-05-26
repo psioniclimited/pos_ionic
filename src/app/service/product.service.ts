@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {SQLite, SQLiteObject} from '@ionic-native/sqlite/ngx';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {Product} from '../_models/product';
 import {Option} from '../_models/option';
 
@@ -10,12 +10,12 @@ import {Option} from '../_models/option';
 export class ProductService {
     private db: SQLiteObject;
     private isOpen: boolean;
-    selectedCategory = new BehaviorSubject<string>(null);
+    selectedCategory = new BehaviorSubject<string>('0');
 
     constructor(private sqlStorage: SQLite) {
     }
 
-    private async start() {
+    private async connect() {
         if (!this.isOpen) {
             this.sqlStorage = new SQLite();
             await this.sqlStorage.create({name: 'pos.db', location: 'default'}).then((db: SQLiteObject) => {
@@ -33,11 +33,11 @@ export class ProductService {
     }
 
     public async getProducts(categoryId) {
-        await this.start();
+        await this.connect();
         let sql;
         const products: Product[] = [];
         let options: Option[];
-        if (categoryId === null || categoryId === 'all') {
+        if (categoryId === '0') {
             sql = 'SELECT * FROM products ORDER BY id';
         } else {
             sql = 'SELECT * FROM products WHERE category_id = ' + categoryId + ' ORDER BY id';
@@ -60,10 +60,10 @@ export class ProductService {
                             // need to query options
                             options = [];
                             const queryOptions = 'SELECT * FROM options WHERE product_id = ' + product.id;
-                            this.db.executeSql(queryOptions, []).then((res) => {
+                            await this.db.executeSql(queryOptions, []).then((res) => {
                                 if (res.rows.length > 0) {
                                     for (let j = 0; j < res.rows.length; j++) {
-                                        const option = new  Option(
+                                        const option = new Option(
                                             res.rows.item(j).id,
                                             res.rows.item(j).product_id,
                                             res.rows.item(j).type,
@@ -73,7 +73,6 @@ export class ProductService {
                                     }
                                 }
                             }).catch((error) => {
-                                console.log('query products did not happen');
                                 console.log(error);
                             });
                             product.options = options;
@@ -81,8 +80,6 @@ export class ProductService {
                         products.push(product);
                     }
                 }
-                console.log(products);
-
                 resolve(products);
             }, (error) => {
                 console.log('error in query products');

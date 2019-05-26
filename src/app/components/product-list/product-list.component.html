@@ -1,6 +1,6 @@
 <ion-content>
     <ion-list no-margin no-padding>
-        <ion-item *ngFor="let product of productList">
+        <ion-item *ngFor="let product of productList" (click)="selectProduct(product)">
             <ion-grid class="product-group">
                 <ion-row>
                     <ion-col size="12" no-margin no-padding class="product-col-name">

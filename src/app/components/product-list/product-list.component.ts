@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {IonInfiniteScroll} from '@ionic/angular';
+import {IonInfiniteScroll, ModalController} from '@ionic/angular';
 import {ProductService} from '../../service/product.service';
+import {ProductSelectionModalPage} from '../../product-selection-modal/product-selection-modal.page';
 import {Product} from '../../_models/product';
 
 @Component({
@@ -14,24 +15,29 @@ export class ProductListComponent implements OnInit {
     @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
     productList: any;
 
-    constructor(private productService: ProductService) {
+    constructor(private productService: ProductService, private modalController: ModalController) {
     }
 
     async ngOnInit() {
         this.productList = [];
-        this.categoryId = 'all';
+        this.categoryId = '0';
         this.productService.selectedCategory.subscribe(async (data) => {
             this.categoryId = data;
-            console.log('Product List Component');
-            console.log(this.categoryId);
             await this.productService.getProducts(this.categoryId).then((res) => {
-                console.log(res);
                 this.productList = res;
             }).catch((error) => {
                 console.log(error);
             });
         });
 
+    }
+
+    public async selectProduct(product: Product) {
+        const modal = await this.modalController.create({
+            component: ProductSelectionModalPage,
+            componentProps: {product: product}
+        });
+        return await modal.present();
     }
 
     loadData(event) {

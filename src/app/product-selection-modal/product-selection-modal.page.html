@@ -1,0 +1,45 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>ProductSelectionModal</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-item>
+        <ion-label>
+            <span>Quantity: </span>
+        </ion-label>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>
+            <h3 style="text-align: center">{{ quantity }}</h3>
+        </ion-label>
+        <ion-icon (click)="sub()" name="remove" slot="start"></ion-icon>
+        <ion-icon (click)="add()" name="add" slot="end"></ion-icon>
+    </ion-item>
+
+    <ion-list>
+        <ion-radio-group>
+            <ion-item>
+                <ion-label>
+                    Options
+                </ion-label>
+            </ion-item>
+            <ion-item *ngFor="let option of product.options">
+                <ion-label>
+                    <span style="float: left">{{ option.type }}</span> <span
+                        style="float: right;">{{ option.price }}</span>
+                </ion-label>
+                <ion-radio [(ngModel)]="selectedOption" slot="start" value="{{option.id}}"></ion-radio>
+            </ion-item>
+        </ion-radio-group>
+    </ion-list>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-button (click)="dismiss()" slot="start" color="danger">Back</ion-button>
+        <ion-button slot="end" color="primary" (click)="addProduct()">Add</ion-button>
+    </ion-toolbar>
+</ion-footer>
