@@ -1,9 +1,18 @@
 export class Option {
-    name: string;
+    id: string;
+    productId: string;
+    type: string;
     price: number;
 
-    constructor(name: string = '', price: number) {
-        this.name = name;
+
+    constructor(id: string = '',
+                productId: string = '',
+                type: string = '',
+                price: number = 0,
+    ) {
+        this.id = id;
+        this.productId = productId;
+        this.type = type;
         this.price = price;
     }
 }
