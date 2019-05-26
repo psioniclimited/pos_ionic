@@ -1,11 +1,11 @@
 export class Option {
-    id: string;
+    id: number;
     productId: string;
     type: string;
     price: number;
 
 
-    constructor(id: string = '',
+    constructor(id: number = 0,
                 productId: string = '',
                 type: string = '',
                 price: number = 0,

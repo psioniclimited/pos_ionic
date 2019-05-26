@@ -20,7 +20,7 @@
     </ion-item>
 
     <ion-list>
-        <ion-radio-group>
+        <ion-radio-group [(ngModel)]="selectedOption">
             <ion-item>
                 <ion-label>
                     Options
@@ -31,7 +31,7 @@
                     <span style="float: left">{{ option.type }}</span> <span
                         style="float: right;">{{ option.price }}</span>
                 </ion-label>
-                <ion-radio [(ngModel)]="selectedOption" slot="start" value="{{option.id}}"></ion-radio>
+                <ion-radio slot="start" value="{{option.id}}"></ion-radio>
             </ion-item>
         </ion-radio-group>
     </ion-list>

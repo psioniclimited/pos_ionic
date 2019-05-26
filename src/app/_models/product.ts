@@ -2,7 +2,7 @@ import {Addon} from './addon';
 import {Option} from './option';
 
 export class Product {
-    id: string;
+    id: number;
     categoryId: string;
     name: string;
     cost: number;
@@ -13,7 +13,7 @@ export class Product {
     options: Option[];
 
     constructor(
-        id: string = '',
+        id: number = 0,
         categoryId: string = '',
         name: string = '',
         cost: number = 0,
