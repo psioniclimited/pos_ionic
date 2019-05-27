@@ -1,47 +1,50 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Cart</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Cart</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list no-margin no-padding>
-    <ion-item *ngFor="let orderDetail of order.orderDetails; let i = index">
+    <ion-list no-margin no-padding>
+        <ion-item *ngFor="let orderDetail of order.orderDetails; let i = index">
       <span>
         <ion-button (click)="decreaseQuantity(i)" fill="clear">
           <ion-icon name="remove"></ion-icon>
         </ion-button>
       </span>
-      <span>{{ orderDetail.quantity }}</span>
-      <span>
+            <span>{{ orderDetail.quantity }}</span>
+            <span>
         <ion-button (click)="increaseQuantity(i)" fill="clear">
           <ion-icon name="add"></ion-icon>
         </ion-button>
       </span>
-      <span>{{ getDescription(orderDetail) }}</span>
-      <span slot="end">{{ calculateItemTotal(orderDetail) }} -
+            <span>{{ getDescription(orderDetail) }}</span>
+            <span slot="end">{{ calculateItemTotal(orderDetail) }} -
         <span>
           <ion-button fill="clear" (click)="removeOrderDetail(i)">
           <ion-icon name="trash"></ion-icon>
         </ion-button>
         </span>
       </span>
-    </ion-item>
-    <ion-item>
-      <span slot="end">Subtotal: {{ total }}</span>
-    </ion-item>
-    <ion-item>
-      <span slot="end">Discount: 0</span>
-    </ion-item>
-    <ion-item>
-      <span slot="end">Total: 1000</span>
-    </ion-item>
-  </ion-list>
+        </ion-item>
+        <ion-item>
+            <span slot="end">Subtotal: {{ total }}</span>
+        </ion-item>
+        <ion-item>
+            <span slot="end">Discount: 0</span>
+        </ion-item>
+        <ion-item>
+            <span slot="end">Total: 1000</span>
+        </ion-item>
+    </ion-list>
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
-    <ion-button slot="start" color="danger" (click)="cancelOrder()">Cancel Order</ion-button>
-    <ion-button slot="end" color="primary" [disabled]="!order">Confirm Order</ion-button>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-button slot="start" color="danger" (click)="cancelOrder()">Cancel Order</ion-button>
+        <ion-button slot="end" color="primary" [disabled]="!order">Confirm Order</ion-button>
+    </ion-toolbar>
 </ion-footer>
