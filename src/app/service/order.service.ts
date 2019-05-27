@@ -47,8 +47,23 @@ export class OrderService {
         this.quantity.next(quantity);
     }
 
-    addProduct(orderDetail: OrderDetail) {
-        // verification
-        this.order.orderDetails.push(orderDetail);
+    increaseQuantity(orderDetailIndex) {
+        this.order.orderDetails[orderDetailIndex].quantity += 1;
+        this.setTotal();
+        this.setQuantity();
+    }
+
+    decreaseQuantity(orderDetailIndex) {
+        if (this.order.orderDetails[orderDetailIndex].quantity > 1) {
+            this.order.orderDetails[orderDetailIndex].quantity -= 1;
+            this.setTotal();
+            this.setQuantity();
+        }
+    }
+
+    removeOrderDetail(orderDetailIndex) {
+        this.order.orderDetails.splice(orderDetailIndex, 1);
+        this.setTotal();
+        this.setQuantity();
     }
 }

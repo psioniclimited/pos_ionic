@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UpdateService} from '../service/update.service';
 import {OrderService} from '../service/order.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-pos',
@@ -11,7 +12,7 @@ export class PosPage implements OnInit {
     total: number;
     quantity: number;
 
-    constructor(private orderService: OrderService) {
+    constructor(private router: Router, private orderService: OrderService) {
     }
 
     ngOnInit() {
@@ -21,6 +22,10 @@ export class PosPage implements OnInit {
         this.orderService.quantity.subscribe((quantity) => {
             this.quantity = quantity;
         });
+    }
+
+    public loadCart() {
+        this.router.navigate(['cart']);
     }
 
     public async updateMenu() {
