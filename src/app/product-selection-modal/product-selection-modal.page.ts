@@ -33,15 +33,11 @@ export class ProductSelectionModalPage implements OnInit {
                 order.orderDetails[productIndex].quantity += this.quantity;
                 this.orderService.setOrder(order);
             } else {
-                const option = this.findOptionIndex();
-                console.log('====>');
-                console.log(option);
-                console.log('====>');
-                console.log(this.product);
-                console.log('====>');
-                console.log(this.selectedOption);
+                // const option = this.findOptionIndex();
+                const option = this.findOption();
                 order.orderDetails.push(new OrderDetail(
-                    this.product.options[option], // here is problem
+                    // this.product.options[option], // here is problem
+                    option, // here is problem
                     this.product,
                     this.selectedOption.price,
                     this.quantity
@@ -52,17 +48,17 @@ export class ProductSelectionModalPage implements OnInit {
         console.log(this.orderService.getOrder());
     }
 
-    private findOptionIndex() {
-        console.log('in the findOptionIndex');
-        for (let i = 0; i < this.product.options.length; i++) {
-            const temp = this.selectedOption + '';
-            const temp2 = this.product.options[i].id + '';
-            if (temp === temp2) {
-                console.log('working here');
-                return i;
-            }
-        }
-    }
+    // private findOptionIndex() {
+    //     console.log('in the findOptionIndex');
+    //     for (let i = 0; i < this.product.options.length; i++) {
+    //         const temp = this.selectedOption + '';
+    //         const temp2 = this.product.options[i].id + '';
+    //         if (temp === temp2) {
+    //             console.log('working here');
+    //             return i;
+    //         }
+    //     }
+    // }
 
     private findOderOptions(order: Order) {
         for (let i = 0; i < order.orderDetails.length; i++) {
@@ -70,7 +66,6 @@ export class ProductSelectionModalPage implements OnInit {
                 const temp = this.selectedOption + '';
                 const temp2 = order.orderDetails[i].option.id + '';
                 if (temp2 === temp) {
-                    console.log('working');
                     return i;
                 }
 
@@ -81,9 +76,11 @@ export class ProductSelectionModalPage implements OnInit {
 
     createOrder() {
         const order = new Order();
-        const option = this.findOptionIndex();
+        // const option = this.findOptionIndex();
+        const option = this.findOption();
         order.orderDetails.push(new OrderDetail(
-            this.product.options[option],
+            // this.product.options[option],
+            option,
             this.product,
             this.selectedOption.price,
             this.quantity
@@ -93,7 +90,7 @@ export class ProductSelectionModalPage implements OnInit {
 
     findOption() {
         return _.find(this.product.options, (o) => {
-            return o.id === this.selectedOption;
+            return (o.id + '') === (this.selectedOption + '');
         });
     }
 
