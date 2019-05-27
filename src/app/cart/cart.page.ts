@@ -15,13 +15,14 @@ export class CartPage implements OnInit {
     }
 
     ngOnInit() {
-    }
-
-    ionViewWillEnter() {
+        // this.order = new Order();
         this.order = this.orderService.getOrder();
         this.orderService.total.subscribe((total) => {
             this.total = total;
         });
+    }
+
+    ionViewWillEnter() {
     }
 
     calculateItemTotal(orderDetail) {
@@ -40,6 +41,7 @@ export class CartPage implements OnInit {
     }
 
     increaseQuantity(orderDetailIndex) {
+        // console.log(orderDetailIndex);
         this.orderService.increaseQuantity(orderDetailIndex);
     }
 

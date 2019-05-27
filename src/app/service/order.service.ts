@@ -49,6 +49,7 @@ export class OrderService {
 
     increaseQuantity(orderDetailIndex) {
         this.order.orderDetails[orderDetailIndex].quantity += 1;
+        this.order.total = this.calculateTotal();
         this.setTotal();
         this.setQuantity();
     }
@@ -56,6 +57,7 @@ export class OrderService {
     decreaseQuantity(orderDetailIndex) {
         if (this.order.orderDetails[orderDetailIndex].quantity > 1) {
             this.order.orderDetails[orderDetailIndex].quantity -= 1;
+            this.order.total = this.calculateTotal();
             this.setTotal();
             this.setQuantity();
         }
@@ -63,6 +65,7 @@ export class OrderService {
 
     removeOrderDetail(orderDetailIndex) {
         this.order.orderDetails.splice(orderDetailIndex, 1);
+        this.calculateTotal();
         this.setTotal();
         this.setQuantity();
     }

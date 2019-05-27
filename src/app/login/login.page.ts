@@ -25,11 +25,11 @@ export class LoginPage implements OnInit {
         }).catch((error) => {
             console.log(error);
         });
-        this.authenticationService.authenticationState.subscribe(state => {
-            if (state) {
-                this.router.navigate(['menu']);
-            }
-        });
+        // this.authenticationService.authenticationState.subscribe(state => {
+        //     if (state) {
+        //         this.router.navigate(['menu']);
+        //     }
+        // });
     }
 
     private formInit() {
