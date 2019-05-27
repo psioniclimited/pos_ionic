@@ -41,9 +41,9 @@ export class DatabaseService {
         await this.deleteProducts();
         await this.deleteAddons();
         await this.deleteOptions();
-        // await this.deleteClients();
-        // await this.deleteOrders();
-        // await this.deleteOrderDetails();
+        await this.deleteClients();
+        await this.deleteOrders();
+        await this.deleteOrderDetails();
     }
 
     private async createCategoriesTable() {
@@ -69,6 +69,7 @@ export class DatabaseService {
             'has_options  TINYINT(1), ' +
             'sale_price  DECIMAL(15,2), ' +
             'description VARCHAR(255), ' +
+            'price_tag VARCHAR(255), ' +
             'FOREIGN KEY (category_id) REFERENCES categories(id))';
 
         this.database.executeSql(sql, []).then().catch((error) => {
@@ -112,7 +113,7 @@ export class DatabaseService {
             'name VARCHAR(255), ' +
             'email VARCHAR(255),' +
             'phone DECIMAL(15,2),' +
-            'age DECIMAL(10,2),' +
+            'discount DECIMAL(15,2),' +
             'address VARCHAR(255))';
 
         this.database.executeSql(sql, []).then().catch((error) => {

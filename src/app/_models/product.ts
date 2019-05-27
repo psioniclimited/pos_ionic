@@ -11,6 +11,7 @@ export class Product {
     hasAddons: number;
     hasOptions: number;
     options: Option[];
+    priceTag: string;
 
     constructor(
         id: number = 0,
@@ -21,6 +22,7 @@ export class Product {
         description: string = '',
         hasAddons: number = 0,
         hasOptions: number = 0,
+        priceTag: string = '',
     ) {
         this.id = id;
         this.categoryId = categoryId;
@@ -30,5 +32,6 @@ export class Product {
         this.description = description;
         this.hasAddons = hasAddons;
         this.hasOptions = hasOptions;
+        this.priceTag = priceTag;
     }
 }

@@ -168,9 +168,21 @@ export class UpdateService {
     private async createProduct(data: any) {
         // console.log('customer id ' + data.id);
         return new Promise(((resolve, reject) => {
-            const sql = 'INSERT INTO products (id, name, category_id, cost, has_addons, has_options, sale_price, description) ' +
-                'VALUES (?,?,?,?,?,?,?,?)';
-            this.db.executeSql(sql, [data.id, data.name, data.category_id, data.cost, data.has_addons, data.has_options, data.sale_price, data.description])
+            const sql = 'INSERT INTO products (id, name, category_id, cost, has_addons, has_options, sale_price, description, price_tag) ' +
+                'VALUES (?,?,?,?,?,?,?,?,?)';
+            this.db.executeSql(sql,
+                [
+                    data.id,
+                    data.name,
+                    data.category_id,
+                    data.cost,
+                    data.has_addons,
+                    data.has_options,
+                    data.sale_price,
+                    data.description,
+                    data.price_tag
+                ]
+            )
                 .then((success) => {
                     resolve(success);
                 }, (error) => {

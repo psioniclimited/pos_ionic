@@ -55,6 +55,7 @@ export class ProductService {
                             data.rows.item(i).description,
                             data.rows.item(i).has_addons,
                             data.rows.item(i).has_options,
+                            data.rows.item(i).price_tag,
                         );
                         if (product.hasOptions === 1) {
                             // need to query options
