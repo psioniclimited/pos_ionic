@@ -21,6 +21,15 @@ export class LoginPage implements OnInit {
 
     ngOnInit() {
         this.formInit();
+        this.authenticationService.checkToken().then(() => {
+        }).catch((error) => {
+            console.log(error);
+        });
+        this.authenticationService.authenticationState.subscribe(state => {
+            if (state) {
+                this.router.navigate(['menu']);
+            }
+        });
     }
 
     private formInit() {
@@ -30,7 +39,7 @@ export class LoginPage implements OnInit {
         });
     }
 
-     async onSubmit() {
+    async onSubmit() {
         if (this.loginForm.valid) {
             const creds = new Creds(
                 this.loginForm.value.email,

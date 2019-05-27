@@ -34,8 +34,8 @@ export class AuthService {
             });
     }
 
-    checkToken() {
-        this.storage.getItem('TOKEN').then(res => {
+    async checkToken() {
+        await this.storage.getItem('TOKEN').then(res => {
             if (res) {
                 this.authenticationState.next(true);
             }
