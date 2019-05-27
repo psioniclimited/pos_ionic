@@ -15,6 +15,7 @@ export class UpdateService {
     // need to change this url
     private categoryUrl = ENV.API_ENDPOINT + '/category';
     private productUrl = ENV.API_ENDPOINT + '/product';
+    private clientUrl = ENV.API_ENDPOINT + '/client';
     private categoryId = [];
     private token = '';
 
@@ -49,7 +50,7 @@ export class UpdateService {
             Authorization: 'Bearer ' + this.token
         };
 
-        const params = {
+        let params = {
             per_page: '3',
             page: '1'
         };
@@ -77,6 +78,43 @@ export class UpdateService {
             }
 
         }
+        params = {
+            per_page: '3',
+            page: '1'
+        };
+        while (true) {
+            const httpRequest = await this.fetchClient(params, headers);
+            if (httpRequest == null) {
+                break;
+            }
+            params.page = httpRequest.toString();
+        }
+    }
+
+    public async fetchClient(params: any, headers: any) {
+        return new Promise((resolve, reject) => {
+            this.http.get(this.clientUrl, params, headers).then(async (data) => {
+                const clients = JSON.parse(data.data);
+                console.log('clients ======');
+                console.log(clients);
+                for (let i = 0; i < clients.data.length; i++) {
+                    await this.createClients(clients.data[i]).then((res) => {
+                    }, (error) => {
+                        console.log(error);
+                    });
+                }
+                console.log(clients.next_page_url);
+                if (clients.next_page_url != null) {
+                    const page = clients.current_page + 1;
+                    resolve(page);
+                }
+                resolve(null);
+            }, (error) => {
+                // console.log('error  in fetching data');
+                // console.log(error);
+                reject(error);
+            });
+        });
     }
 
     private async fetchCategory(params: any, headers: any) {
@@ -220,6 +258,27 @@ export class UpdateService {
                     resolve(success);
                 }, (error) => {
                     // console.log('customer create error ' + error);
+                    reject(error);
+                });
+        }));
+    }
+
+    private async createClients(data: any) {
+        // console.log('customer id ' + data.id);
+        return new Promise(((resolve, reject) => {
+            const sql = 'INSERT INTO clients (id, name, email, phone, discount, address) ' +
+                'VALUES (?,?,?,?,?,?)';
+            this.db.executeSql(sql, [
+                data.id,
+                data.name,
+                data.phone,
+                data.phone,
+                data.discount,
+                data.address])
+                .then((success) => {
+                    resolve(success);
+                }, (error) => {
+                    console.log('clients create error ' + error);
                     reject(error);
                 });
         }));
