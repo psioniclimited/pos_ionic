@@ -2,12 +2,15 @@ import {Injectable} from '@angular/core';
 import {Order} from '../_models/order';
 import {OrderDetail} from '../_models/order-detail';
 import * as _ from 'lodash';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class OrderService {
     order: Order;
+    total = new BehaviorSubject(0);
+    quantity = new BehaviorSubject(0);
 
     constructor() {
     }
@@ -15,6 +18,8 @@ export class OrderService {
     setOrder(order: Order) {
         this.order = order;
         order.total = this.calculateTotal();
+        this.setTotal();
+        this.setQuantity();
     }
 
     getOrder() {
@@ -29,6 +34,17 @@ export class OrderService {
                 return orderDetail.product.salePrice * orderDetail.quantity;
             }
         });
+    }
+
+    setTotal() {
+        this.total.next(this.order.total);
+    }
+
+    setQuantity() {
+        const quantity = _.sumBy(this.order.orderDetails, (orderDetail) => {
+            return orderDetail.quantity;
+        });
+        this.quantity.next(quantity);
     }
 
     addProduct(orderDetail: OrderDetail) {

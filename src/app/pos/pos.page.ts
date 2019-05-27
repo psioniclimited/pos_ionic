@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UpdateService} from '../service/update.service';
+import {OrderService} from '../service/order.service';
 
 @Component({
     selector: 'app-pos',
@@ -7,11 +8,19 @@ import {UpdateService} from '../service/update.service';
     styleUrls: ['./pos.page.scss'],
 })
 export class PosPage implements OnInit {
+    total: number;
+    quantity: number;
 
-    constructor() {
+    constructor(private orderService: OrderService) {
     }
 
     ngOnInit() {
+        this.orderService.total.subscribe((total) => {
+            this.total = total;
+        });
+        this.orderService.quantity.subscribe((quantity) => {
+            this.quantity = quantity;
+        });
     }
 
     public async updateMenu() {

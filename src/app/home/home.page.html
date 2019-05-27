@@ -1,13 +1,22 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Ionic Blank
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>POS</ion-title>
+    <ion-title slot="end">TK 1000</ion-title>
+    <ion-title slot="end">
+      <ion-button>
+        <ion-icon name="cart">
+        </ion-icon>
+        <ion-badge color="danger">5</ion-badge>
+      </ion-button>
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <app-topbar></app-topbar>
   <div class="ion-padding">
   </div>
 </ion-content>
+

@@ -4,6 +4,14 @@
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>POS</ion-title>
+        <ion-title slot="end">TK {{ total }}</ion-title>
+        <ion-title slot="end">
+            <ion-button>
+                <ion-icon name="cart">
+                </ion-icon>
+                <ion-badge color="danger"> {{ quantity }}</ion-badge>
+            </ion-button>
+        </ion-title>
     </ion-toolbar>
 </ion-header>
 

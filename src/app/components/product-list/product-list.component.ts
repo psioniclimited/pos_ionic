@@ -3,6 +3,7 @@ import {IonInfiniteScroll, ModalController} from '@ionic/angular';
 import {ProductService} from '../../service/product.service';
 import {ProductSelectionModalPage} from '../../product-selection-modal/product-selection-modal.page';
 import {Product} from '../../_models/product';
+import {OrderService} from '../../service/order.service';
 
 @Component({
     selector: 'app-product-list',
@@ -11,11 +12,13 @@ import {Product} from '../../_models/product';
 })
 export class ProductListComponent implements OnInit {
     categoryId: string;
-
+    total: number;
     @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
     productList: any;
 
-    constructor(private productService: ProductService, private modalController: ModalController) {
+    constructor(private productService: ProductService,
+                private modalController: ModalController,
+                private orderPervice: OrderService) {
     }
 
     async ngOnInit() {
@@ -29,7 +32,9 @@ export class ProductListComponent implements OnInit {
                 console.log(error);
             });
         });
-
+        this.orderPervice.total.subscribe((total) => {
+            this.total = total;
+        });
     }
 
     public async selectProduct(product: Product) {
