@@ -27,70 +27,47 @@ export class ProductSelectionModalPage implements OnInit {
             this.dismiss();
         } else {
             const order = this.orderService.getOrder();
-            const productIndex = this.findOderOptions(order);
-
+            const productIndex = _.findIndex(order.orderDetails, (orderDetail) => {
+                return orderDetail.product.id == this.product.id
+                    && (this.product.hasOptions === 0 || orderDetail.option.id == this.selectedOption);
+            });
+            // add existing product
             if (productIndex >= 0) {
                 order.orderDetails[productIndex].quantity += this.quantity;
                 this.orderService.setOrder(order);
             } else {
-                // const option = this.findOptionIndex();
                 const option = this.findOption();
                 order.orderDetails.push(new OrderDetail(
-                    // this.product.options[option], // here is problem
-                    option, // here is problem
+                    option,
                     this.product,
-                    this.selectedOption.price,
+                    this.selectedOption && this.selectedOption.price || null,
                     this.quantity
                 ));
+                this.orderService.setOrder(order);
             }
             this.dismiss();
         }
         console.log(this.orderService.getOrder());
     }
 
-    // private findOptionIndex() {
-    //     console.log('in the findOptionIndex');
-    //     for (let i = 0; i < this.product.options.length; i++) {
-    //         const temp = this.selectedOption + '';
-    //         const temp2 = this.product.options[i].id + '';
-    //         if (temp === temp2) {
-    //             console.log('working here');
-    //             return i;
-    //         }
-    //     }
-    // }
-
-    private findOderOptions(order: Order) {
-        for (let i = 0; i < order.orderDetails.length; i++) {
-            if (this.product.id === order.orderDetails[i].product.id) {
-                const temp = this.selectedOption + '';
-                const temp2 = order.orderDetails[i].option.id + '';
-                if (temp2 === temp) {
-                    return i;
-                }
-
-            }
-        }
-        return -1;
-    }
-
     createOrder() {
         const order = new Order();
-        // const option = this.findOptionIndex();
         const option = this.findOption();
         order.orderDetails.push(new OrderDetail(
-            // this.product.options[option],
             option,
             this.product,
-            this.selectedOption.price,
+            this.selectedOption && this.selectedOption.price || null,
             this.quantity
         ));
+        // update total of order
+        // order.total = (this.selectedOption && this.selectedOption.price) * this.quantity ||
+        //     this.product.price * this.quantity;
         this.orderService.setOrder(order);
     }
 
     findOption() {
         return _.find(this.product.options, (o) => {
-            return (o.id + '') === (this.selectedOption + '');
+            return o.id == this.selectedOption;
         });
     }
 
@@ -99,7 +76,7 @@ export class ProductSelectionModalPage implements OnInit {
     }
 
     sub() {
-        if (this.quantity > 0) {
+        if (this.quantity > 1) {
             --this.quantity;
         }
     }
@@ -107,5 +84,4 @@ export class ProductSelectionModalPage implements OnInit {
     dismiss() {
         this.modalController.dismiss().catch();
     }
-
 }

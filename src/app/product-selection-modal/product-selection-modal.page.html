@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>ProductSelectionModal</ion-title>
+        <ion-title>{{ product.name }}</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -26,12 +26,12 @@
                     Options
                 </ion-label>
             </ion-item>
-            <ion-item *ngFor="let option of product.options">
+            <ion-item *ngFor="let option of product.options; let i = index;">
                 <ion-label>
                     <span style="float: left">{{ option.type }}</span> <span
                         style="float: right;">{{ option.price }}</span>
                 </ion-label>
-                <ion-radio slot="start" value="{{option.id}}"></ion-radio>
+                <ion-radio slot="start" value="{{option.id}}" [checked]="i === 0"></ion-radio>
             </ion-item>
         </ion-radio-group>
     </ion-list>
