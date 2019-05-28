@@ -11,15 +11,21 @@ export class OrderService {
     order: Order;
     total = new BehaviorSubject(0);
     quantity = new BehaviorSubject(0);
+    isSetSharedOrder = new BehaviorSubject(false);
 
     constructor() {
     }
 
     setOrder(order: Order) {
         this.order = order;
-        order.total = this.calculateTotal();
-        this.setTotal();
-        this.setQuantity();
+        if (this.order) {
+            order.total = this.calculateTotal();
+            this.setTotal();
+            this.setQuantity();
+        } else {
+            this.total.next(0);
+            this.quantity.next(0);
+        }
     }
 
     getOrder() {
@@ -65,7 +71,7 @@ export class OrderService {
 
     removeOrderDetail(orderDetailIndex) {
         this.order.orderDetails.splice(orderDetailIndex, 1);
-        this.calculateTotal();
+        this.order.total = this.calculateTotal();
         this.setTotal();
         this.setQuantity();
     }

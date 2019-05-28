@@ -12,7 +12,8 @@ export class PosPage implements OnInit {
     total: number;
     quantity: number;
 
-    constructor(private router: Router, private orderService: OrderService) {
+    constructor(private router: Router,
+                private orderService: OrderService) {
     }
 
     ngOnInit() {

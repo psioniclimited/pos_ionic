@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {OrderService} from '../service/order.service';
 import {Order} from '../_models/order';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-cart',
@@ -11,7 +12,8 @@ export class CartPage implements OnInit {
     order: Order;
     total: number;
 
-    constructor(private orderService: OrderService) {
+    constructor(private orderService: OrderService,
+                private router: Router) {
     }
 
     ngOnInit() {
@@ -55,5 +57,6 @@ export class CartPage implements OnInit {
 
     cancelOrder() {
         this.orderService.setOrder(null);
+        this.router.navigate(['menu']);
     }
 }
