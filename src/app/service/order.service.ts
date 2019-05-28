@@ -3,6 +3,7 @@ import {Order} from '../_models/order';
 import {OrderDetail} from '../_models/order-detail';
 import * as _ from 'lodash';
 import {BehaviorSubject} from 'rxjs';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite/ngx';
 
 @Injectable({
     providedIn: 'root'
@@ -13,8 +14,11 @@ export class OrderService {
     quantity = new BehaviorSubject(0);
     discount = new BehaviorSubject(0);
     grandTotal = new BehaviorSubject(0);
+    private db: SQLiteObject;
+    private isOpen: boolean;
 
-    constructor() {}
+    constructor(private sqlStorage: SQLite) {
+    }
 
     setOrder(order: Order) {
         this.order = order;
@@ -90,5 +94,27 @@ export class OrderService {
         this.setTotal();
         this.setQuantity();
         this.setGrandTotal();
+    }
+
+    private async connect() {
+        if (!this.isOpen) {
+            this.sqlStorage = new SQLite();
+            await this.sqlStorage.create({name: 'pos.db', location: 'default'}).then((db: SQLiteObject) => {
+                this.db = db;
+                this.isOpen = true;
+
+            }).catch((error) => {
+
+            });
+        }
+    }
+
+    public async createOrder() {
+        await this.connect();
+        console.log('======');
+        console.log(this.order);
+        // return new Promise((resolve, reject) => {
+        //    const orderSql = ""
+        // });
     }
 }

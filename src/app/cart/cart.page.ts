@@ -100,6 +100,6 @@ export class CartPage implements OnInit {
     }
 
     confirmOrder() {
-        console.log(this.orderService.getOrder());
+        console.log(this.orderService.createOrder());
     }
 }

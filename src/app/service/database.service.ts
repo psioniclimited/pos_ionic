@@ -126,8 +126,9 @@ export class DatabaseService {
         const sql = 'CREATE TABLE IF NOT EXISTS orders' +
             '(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,' +
             'client_id INTEGER NOT NULL, ' +
-            'type VARCHAR(255),' +
-            'price DECIMAL(15,2),' +
+            'total DECIMAL(15,2),' +
+            'discount DECIMAL(15,2),' +
+            'date DATE),' +
             'FOREIGN KEY (client_id) REFERENCES clients(id))';
 
         this.database.executeSql(sql, []).then().catch((error) => {
@@ -141,10 +142,11 @@ export class DatabaseService {
             '(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,' +
             'order_id INTEGER NOT NULL,' +
             'option_id INTEGER NOT NULL,' +
-            'type VARCHAR(255),' +
+            'product_id INTEGER NOT NULL,' +
             'price DECIMAL(15,2),' +
             'FOREIGN KEY (order_id) REFERENCES orders(id),' +
-            'FOREIGN KEY (option_id) REFERENCES options(id))';
+            'FOREIGN KEY (option_id) REFERENCES options(id)),' +
+            'FOREIGN KEY (product_id) REFERENCES products(id))';
 
         this.database.executeSql(sql, []).then().catch((error) => {
             console.log('order_details not created');
