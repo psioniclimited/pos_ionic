@@ -4,6 +4,10 @@ import {Order} from '../_models/order';
 import {Router} from '@angular/router';
 import {ClientService} from '../service/client.service';
 import {Client} from '../_models/client';
+import {ModalController} from '@ionic/angular';
+import {Product} from '../_models/product';
+import {ProductSelectionModalPage} from '../product-selection-modal/product-selection-modal.page';
+import {DiscountModalPage} from '../discount-modal/discount-modal.page';
 
 @Component({
     selector: 'app-cart',
@@ -19,6 +23,7 @@ export class CartPage implements OnInit {
 
     constructor(private orderService: OrderService,
                 private clientService: ClientService,
+                public modalController: ModalController,
                 private router: Router) {
     }
 
@@ -75,6 +80,14 @@ export class CartPage implements OnInit {
 
     selectCustomer() {
         this.router.navigate(['customer-selection-modal']);
+    }
+
+    public async openDiscountModal() {
+        const modal = await this.modalController.create({
+            component: DiscountModalPage,
+            componentProps: {discount: this.discount}
+        });
+        return await modal.present();
     }
 
     getClient() {

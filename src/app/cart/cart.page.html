@@ -37,7 +37,7 @@
         <ion-item>
             <span slot="end">Subtotal: {{ total }}</span>
         </ion-item>
-        <ion-item>
+        <ion-item (click)="openDiscountModal()">
             <span slot="end">Discount: {{ discount }}%</span>
         </ion-item>
         <ion-item>

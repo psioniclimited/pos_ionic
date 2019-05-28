@@ -10,13 +10,20 @@ import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {HTTP} from '@ionic-native/http/ngx';
 import {NativeStorage} from '@ionic-native/native-storage/ngx';
-import { SQLite } from '@ionic-native/sqlite/ngx';
+import {SQLite} from '@ionic-native/sqlite/ngx';
 import {ProductSelectionModalPageModule} from './product-selection-modal/product-selection-modal.module';
+import {DiscountModalPageModule} from './discount-modal/discount-modal.module';
 
 @NgModule({
     declarations: [AppComponent],
     entryComponents: [],
-    imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ProductSelectionModalPageModule],
+    imports: [
+        BrowserModule,
+        IonicModule.forRoot(),
+        AppRoutingModule,
+        ProductSelectionModalPageModule,
+        DiscountModalPageModule
+    ],
     providers: [
         StatusBar,
         SplashScreen,

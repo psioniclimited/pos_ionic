@@ -1,0 +1,10 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>DiscountModal</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-input type="number" max='100' min="0" [(ngModel)]="discount"></ion-input>
+    <ion-button color="primary" (click)="setDiscount()">Discount</ion-button>
+</ion-content>
