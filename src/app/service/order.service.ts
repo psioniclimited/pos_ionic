@@ -20,11 +20,13 @@ export class OrderService {
         this.order = order;
         if (this.order) {
             order.total = this.calculateTotal();
+            this.setGrandTotal();
             this.setTotal();
             this.setQuantity();
         } else {
             this.total.next(0);
             this.quantity.next(0);
+            this.grandTotal.next(0);
         }
     }
 
@@ -53,11 +55,17 @@ export class OrderService {
         this.quantity.next(quantity);
     }
 
+    setGrandTotal() {
+        const grandTotal = this.order.total - (this.order.total * this.order.discount) / 100;
+        this.grandTotal.next(grandTotal);
+    }
+
     increaseQuantity(orderDetailIndex) {
         this.order.orderDetails[orderDetailIndex].quantity += 1;
         this.order.total = this.calculateTotal();
         this.setTotal();
         this.setQuantity();
+        this.setGrandTotal();
     }
 
     decreaseQuantity(orderDetailIndex) {
@@ -66,12 +74,14 @@ export class OrderService {
             this.order.total = this.calculateTotal();
             this.setTotal();
             this.setQuantity();
+            this.setGrandTotal();
         }
     }
 
     setDiscount(discount) {
         this.order.discount = discount;
         this.discount.next(discount);
+        this.setGrandTotal();
     }
 
     removeOrderDetail(orderDetailIndex) {
@@ -79,5 +89,6 @@ export class OrderService {
         this.order.total = this.calculateTotal();
         this.setTotal();
         this.setQuantity();
+        this.setGrandTotal();
     }
 }

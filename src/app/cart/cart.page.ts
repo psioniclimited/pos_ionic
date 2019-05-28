@@ -14,6 +14,7 @@ export class CartPage implements OnInit {
     order: Order;
     total: number;
     discount: number;
+    grandTotal: number;
     client: Client;
 
     constructor(private orderService: OrderService,
@@ -29,6 +30,9 @@ export class CartPage implements OnInit {
         });
         this.orderService.discount.subscribe((discount) => {
             this.discount = discount;
+        });
+        this.orderService.grandTotal.subscribe((grandTotal) => {
+            this.grandTotal = grandTotal;
         });
     }
 
@@ -64,6 +68,7 @@ export class CartPage implements OnInit {
     }
 
     cancelOrder() {
+        this.clientService.setClient(null);
         this.orderService.setOrder(null);
         this.router.navigate(['menu']);
     }
