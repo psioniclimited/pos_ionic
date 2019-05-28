@@ -13,6 +13,7 @@ import {Client} from '../_models/client';
 export class CartPage implements OnInit {
     order: Order;
     total: number;
+    discount: number;
     client: Client;
 
     constructor(private orderService: OrderService,
@@ -25,6 +26,9 @@ export class CartPage implements OnInit {
         this.order = this.orderService.getOrder();
         this.orderService.total.subscribe((total) => {
             this.total = total;
+        });
+        this.orderService.discount.subscribe((discount) => {
+            this.discount = discount;
         });
     }
 
@@ -74,5 +78,9 @@ export class CartPage implements OnInit {
             return client.name;
         }
         return '';
+    }
+
+    confirmOrder() {
+        console.log(this.orderService.getOrder());
     }
 }

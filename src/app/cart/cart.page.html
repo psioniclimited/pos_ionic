@@ -38,7 +38,7 @@
             <span slot="end">Subtotal: {{ total }}</span>
         </ion-item>
         <ion-item>
-            <span slot="end">Discount: 0</span>
+            <span slot="end">Discount: {{ discount }}%</span>
         </ion-item>
         <ion-item>
             <span slot="end">Total: 1000</span>
@@ -49,6 +49,6 @@
 <ion-footer>
     <ion-toolbar>
         <ion-button slot="start" color="danger" (click)="cancelOrder()">Cancel Order</ion-button>
-        <ion-button slot="end" color="primary" [disabled]="!order">Confirm Order</ion-button>
+        <ion-button slot="end" color="primary" [disabled]="!order" (click)="confirmOrder()">Confirm Order</ion-button>
     </ion-toolbar>
 </ion-footer>

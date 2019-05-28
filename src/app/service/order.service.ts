@@ -11,8 +11,10 @@ export class OrderService {
     order: Order;
     total = new BehaviorSubject(0);
     quantity = new BehaviorSubject(0);
-    constructor() {
-    }
+    discount = new BehaviorSubject(0);
+    grandTotal = new BehaviorSubject(0);
+
+    constructor() {}
 
     setOrder(order: Order) {
         this.order = order;
@@ -65,6 +67,11 @@ export class OrderService {
             this.setTotal();
             this.setQuantity();
         }
+    }
+
+    setDiscount(discount) {
+        this.order.discount = discount;
+        this.discount.next(discount);
     }
 
     removeOrderDetail(orderDetailIndex) {

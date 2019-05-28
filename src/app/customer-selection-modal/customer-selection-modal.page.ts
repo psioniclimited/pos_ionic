@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ClientService} from '../service/client.service';
 import {Router} from '@angular/router';
 import * as _ from 'lodash';
+import {OrderService} from '../service/order.service';
 
 @Component({
     selector: 'app-customer-selection-modal',
@@ -12,7 +13,7 @@ export class CustomerSelectionModalPage implements OnInit {
     clients: any;
     selectedOption: any;
 
-    constructor(private clientService: ClientService, private router: Router) {
+    constructor(private clientService: ClientService, private orderService: OrderService, private router: Router) {
     }
 
     async ngOnInit() {
@@ -52,6 +53,9 @@ export class CustomerSelectionModalPage implements OnInit {
             return client.id == this.selectedOption;
         });
         this.clientService.setClient(client);
+        const order = this.orderService.getOrder();
+        order.client = client;
+        this.orderService.setOrder(order);
         this.router.navigate(['cart']);
     }
 

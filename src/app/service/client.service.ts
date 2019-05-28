@@ -3,6 +3,7 @@ import {SQLite, SQLiteObject} from '@ionic-native/sqlite/ngx';
 import {Product} from '../_models/product';
 import {Client} from '../_models/client';
 import {Category} from '../_models/category';
+import {OrderService} from './order.service';
 
 @Injectable({
     providedIn: 'root'
@@ -12,13 +13,12 @@ export class ClientService {
     private db: SQLiteObject;
     private isOpen: boolean;
 
-    constructor(private sqlStorage: SQLite) {
+    constructor(private sqlStorage: SQLite, private orderService: OrderService) {
     }
 
     public setClient(client) {
-        console.log('set client');
-        console.log(client);
         this.client = client;
+        this.orderService.setDiscount(client.discount);
     }
 
     public getClient() {
