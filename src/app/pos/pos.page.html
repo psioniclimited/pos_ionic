@@ -6,7 +6,7 @@
         <ion-title>POS</ion-title>
         <ion-title slot="end">TK {{ total }}</ion-title>
         <ion-title slot="end">
-            <ion-button (click)="loadCart()">
+            <ion-button [disabled]="total == 0" (click)="loadCart()">
                 <ion-icon name="cart">
                 </ion-icon>
                 <ion-badge color="danger"> {{ quantity }}</ion-badge>

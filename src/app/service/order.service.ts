@@ -11,8 +11,6 @@ export class OrderService {
     order: Order;
     total = new BehaviorSubject(0);
     quantity = new BehaviorSubject(0);
-    isSetSharedOrder = new BehaviorSubject(false);
-
     constructor() {
     }
 

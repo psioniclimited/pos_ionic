@@ -29,8 +29,6 @@ export class LoginPage implements OnInit {
         });
         this.authenticationService.authenticationState.subscribe(state => {
             if (state) {
-                // this.router.navigate(['menu']);
-                // this.router.navigateByUrl('menu');
                 this.navCtrl.navigateRoot('menu');
             }
         });
