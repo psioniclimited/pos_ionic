@@ -128,7 +128,7 @@ export class DatabaseService {
             'client_id INTEGER NOT NULL, ' +
             'total DECIMAL(15,2),' +
             'discount DECIMAL(15,2),' +
-            'date DATE),' +
+            'date DATE,' +
             'FOREIGN KEY (client_id) REFERENCES clients(id))';
 
         this.database.executeSql(sql, []).then().catch((error) => {
@@ -145,7 +145,7 @@ export class DatabaseService {
             'product_id INTEGER NOT NULL,' +
             'price DECIMAL(15,2),' +
             'FOREIGN KEY (order_id) REFERENCES orders(id),' +
-            'FOREIGN KEY (option_id) REFERENCES options(id)),' +
+            'FOREIGN KEY (option_id) REFERENCES options(id),' +
             'FOREIGN KEY (product_id) REFERENCES products(id))';
 
         this.database.executeSql(sql, []).then().catch((error) => {
