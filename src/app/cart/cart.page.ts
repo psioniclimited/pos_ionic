@@ -85,7 +85,8 @@ export class CartPage implements OnInit {
     public async openDiscountModal() {
         const modal = await this.modalController.create({
             component: DiscountModalPage,
-            componentProps: {discount: this.discount}
+            componentProps: {discount: this.discount},
+            cssClass: 'my-custom-modal-css'
         });
         return await modal.present();
     }
