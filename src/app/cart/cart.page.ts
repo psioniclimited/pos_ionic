@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {OrderService} from '../service/order.service';
 import {Order} from '../_models/order';
 import {Router} from '@angular/router';
+import {ClientService} from '../service/client.service';
+import {Client} from '../_models/client';
 
 @Component({
     selector: 'app-cart',
@@ -11,8 +13,10 @@ import {Router} from '@angular/router';
 export class CartPage implements OnInit {
     order: Order;
     total: number;
+    client: Client;
 
     constructor(private orderService: OrderService,
+                private clientService: ClientService,
                 private router: Router) {
     }
 
@@ -58,5 +62,17 @@ export class CartPage implements OnInit {
     cancelOrder() {
         this.orderService.setOrder(null);
         this.router.navigate(['menu']);
+    }
+
+    selectCustomer() {
+        this.router.navigate(['customer-selection-modal']);
+    }
+
+    getClient() {
+        const client = this.clientService.getClient();
+        if (client) {
+            return client.name;
+        }
+        return '';
     }
 }

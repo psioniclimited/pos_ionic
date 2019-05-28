@@ -4,6 +4,10 @@
             <ion-back-button></ion-back-button>
         </ion-buttons>
         <ion-title>Cart</ion-title>
+        <ion-button slot="end" (click)="selectCustomer()">
+            {{ getClient() }}
+            <ion-icon slot="end" name="person-add"></ion-icon>
+        </ion-button>
     </ion-toolbar>
 </ion-header>
 

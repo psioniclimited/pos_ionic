@@ -23,7 +23,6 @@ export class AuthService {
         return this.http.post(this.apiUrl, creds, {}).then(data => {
             const response = JSON.parse(data.data);
             this.storage.setItem('TOKEN', response.token).then(() => {
-                console.log('token stored');
                 this.authenticationState.next(true);
             });
             return response;
