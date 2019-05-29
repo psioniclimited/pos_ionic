@@ -26,7 +26,7 @@ export class CustomerSelectionModalPage implements OnInit {
     }
 
     private async initializeClientCollection() {
-        await this.clientService.getClients(0).then((data) => {
+        await this.clientService.getClients(0, 20).then((data) => {
             !this.selectedOption ? this.selectedOption = data[0].id : '';
             this.clients = data;
         }).catch((error) => {
@@ -37,7 +37,7 @@ export class CustomerSelectionModalPage implements OnInit {
     async doInfinite(infiniteScroll) {
         const lastId = this.clients[this.clients.length - 1].id;
 
-        await this.clientService.getClients(lastId).then((res: any) => {
+        await this.clientService.getClients(lastId, 20).then((res: any) => {
             for (let i = 0; i < res.length; i++) {
                 this.clients.push(res[i]);
             }

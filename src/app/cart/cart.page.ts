@@ -100,10 +100,13 @@ export class CartPage implements OnInit {
     }
 
     async confirmOrder() {
+        const order = this.orderService.getOrder();
+        if (order.client.id == 0) {
+            this.selectCustomer();
+        }
         await this.orderService.createOrder().then(() => {
             this.orderSubmit = true;
         }).catch((error) => {
-            console.log('orders not stored');
             console.log(error);
         });
     }

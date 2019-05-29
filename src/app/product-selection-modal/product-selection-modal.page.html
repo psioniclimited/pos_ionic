@@ -40,6 +40,12 @@
 <ion-footer>
     <ion-toolbar>
         <ion-button (click)="dismiss()" slot="start" color="danger">Back</ion-button>
-        <ion-button slot="end" color="primary" (click)="addProduct()">Add</ion-button>
+        <ion-button
+                slot="end"
+                color="primary"
+                (click)="addProduct()"
+                [disabled]="!selectedOption && product.hasOptions == 1">
+            Add
+        </ion-button>
     </ion-toolbar>
 </ion-footer>

@@ -13,7 +13,8 @@ export class ClientService {
     private db: SQLiteObject;
     private isOpen: boolean;
 
-    constructor(private sqlStorage: SQLite, private orderService: OrderService) {
+    constructor(private sqlStorage: SQLite,
+                private orderService: OrderService) {
     }
 
     public setClient(client) {
@@ -43,10 +44,10 @@ export class ClientService {
         }
     }
 
-    async getClients(lastId) {
+    async getClients(lastId, limit: number = 1) {
         await this.connect();
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM clients WHERE id >= ' + lastId + ' ORDER BY id LIMIT 20';
+            const sql = 'SELECT * FROM clients WHERE id >= ' + lastId + ' ORDER BY id LIMIT ' + limit;
             this.db.executeSql(sql, []).then((data) => {
                 const clients: Client[] = [];
                 if (data.rows.length > 0) {

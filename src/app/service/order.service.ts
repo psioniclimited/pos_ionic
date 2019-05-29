@@ -113,27 +113,28 @@ export class OrderService {
 
     public async createOrder() {
         await this.connect();
-        console.log('======');
-        console.log(this.order);
         // creating order first
-        await this.storeOrder().then(async () => {
+        await this.insertOrder().then(async () => {
             // find the latest order id
             const lastOrderId = await this.getLastOrderId();
             // store order details
             for (let i = 0; i < this.order.orderDetails.length; i++) {
                 if (this.order.orderDetails[i].option) {
                     // store option and product id
-                    console.log('has option');
-                    await this.storeOderDetailWithOption(lastOrderId,
+                    await this.storeOrderDetailWithOption(
+                        lastOrderId,
                         this.order.orderDetails[i].option,
                         this.order.orderDetails[i].product,
-                        this.order.orderDetails[i].quantity);
+                        this.order.orderDetails[i].quantity
+                    );
                 } else {
                     // store only product id
                     console.log('no option');
-                    await this.storeOderDetailWithNoOption(lastOrderId,
+                    await this.storeOrderDetailWithNoOption(
+                        lastOrderId,
                         this.order.orderDetails[i].product,
-                        this.order.orderDetails[i].quantity);
+                        this.order.orderDetails[i].quantity
+                    );
                 }
             }
 
@@ -145,11 +146,16 @@ export class OrderService {
         // });
     }
 
-    private async storeOrder() {
+    private async insertOrder() {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO orders (client_id, total, discount, date) ' +
                 'VALUES (?,?,?,?)';
-            this.db.executeSql(sql, [this.order.client.id, this.order.total, this.order.discount, this.order.date])
+            this.db.executeSql(sql, [
+                this.order.client.id,
+                this.order.total,
+                this.order.discount,
+                this.order.date
+            ])
                 .then((success) => {
                     resolve(success);
                 }, (error) => {
@@ -176,7 +182,7 @@ export class OrderService {
         });
     }
 
-    private async storeOderDetailWithOption(orderId, option, product, quantity) {
+    private async storeOrderDetailWithOption(orderId, option, product, quantity) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO order_details (order_id, option_id, product_id, price, quantity) ' +
                 'VALUES (?,?,?,?,?)';
@@ -190,7 +196,7 @@ export class OrderService {
         });
     }
 
-    private async storeOderDetailWithNoOption(orderId, product, quantity) {
+    private async storeOrderDetailWithNoOption(orderId, product, quantity) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO order_details (order_id, product_id, price, quantity) ' +
                 'VALUES (?,?,?,?)';
