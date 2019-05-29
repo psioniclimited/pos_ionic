@@ -13,6 +13,7 @@ import {NativeStorage} from '@ionic-native/native-storage/ngx';
 import {SQLite} from '@ionic-native/sqlite/ngx';
 import {ProductSelectionModalPageModule} from './product-selection-modal/product-selection-modal.module';
 import {DiscountModalPageModule} from './discount-modal/discount-modal.module';
+import {BluetoothSerial} from '@ionic-native/bluetooth-serial/ngx';
 
 @NgModule({
     declarations: [AppComponent],
@@ -30,6 +31,7 @@ import {DiscountModalPageModule} from './discount-modal/discount-modal.module';
         HTTP,
         NativeStorage,
         SQLite,
+        BluetoothSerial,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     ],
     bootstrap: [AppComponent]

@@ -6,6 +6,8 @@ import {ClientService} from '../service/client.service';
 import {Client} from '../_models/client';
 import {ModalController} from '@ionic/angular';
 import {DiscountModalPage} from '../discount-modal/discount-modal.page';
+import {BluetoothSerial} from '@ionic-native/bluetooth-serial/ngx';
+import {BluetoothPrinterService} from '../bluetooth-printer.service';
 
 @Component({
     selector: 'app-cart',
@@ -23,6 +25,8 @@ export class CartPage implements OnInit {
     constructor(private orderService: OrderService,
                 private clientService: ClientService,
                 public modalController: ModalController,
+                private bluetoothSerial: BluetoothSerial,
+                private bluetoothPrinterService: BluetoothPrinterService,
                 private router: Router) {
     }
 
@@ -111,11 +115,34 @@ export class CartPage implements OnInit {
         });
     }
 
-    printToken() {
-        console.log('print token');
+    async printToken() {
+        this.bluetoothSerial.isConnected().then((data) => {
+                // const format = new Uint8Array(3);
+                // format[0] = 0x1B;
+                // format[1] = 0x21;
+                // format[2] = 0x00;
+                // this.bluetoothSerial.write(format).then();
+                this.bluetoothSerial.write('\x1B\x21\x30HelloWord \n\n\n\n').then();
+            }
+        );
+        // await this.bluetoothPrinter.connectPrinter().then();
+        // const data = new Uint8Array(3);
+        // data[0] = 0x1B;
+        // data[1] = 0x21;
+        // data[2] = 0x00;
+        // this.bluetoothSerial.write(data).then();
+        // setTimeout(() =>  {
+        //     this.bluetoothSerial.write('TOKEN NUMBER 1').then();
+        // }, 3000);
+
+
     }
 
     printReceipt() {
         console.log('print receipt');
+    }
+
+    orderDone() {
+        console.log('order done');
     }
 }

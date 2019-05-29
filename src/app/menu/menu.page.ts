@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UpdateService} from '../service/update.service';
 import {AlertController, LoadingController} from '@ionic/angular';
+import {BluetoothPrinterService} from '../bluetooth-printer.service';
 
 @Component({
     selector: 'app-menu',
@@ -8,6 +9,7 @@ import {AlertController, LoadingController} from '@ionic/angular';
     styleUrls: ['./menu.page.scss'],
 })
 export class MenuPage implements OnInit {
+    printerStatus = false;
 
     pages = [
         {
@@ -19,10 +21,14 @@ export class MenuPage implements OnInit {
 
     constructor(private updateService: UpdateService,
                 private alertController: AlertController,
+                private bluetoothPrinterService: BluetoothPrinterService,
                 private loadingController: LoadingController) {
     }
 
     ngOnInit() {
+        this.bluetoothPrinterService.printerStatus.subscribe((status) => {
+            this.printerStatus = status;
+        });
     }
 
     async update() {
@@ -53,6 +59,10 @@ export class MenuPage implements OnInit {
         });
 
         await alert.present();
+    }
+
+    async connectPrinter() {
+        await this.bluetoothPrinterService.connectPrinter();
     }
 
 }
