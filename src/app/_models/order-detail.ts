@@ -6,6 +6,8 @@ export class OrderDetail {
     product: Product;
     total: number;
     quantity: number;
+    productId: number;
+    optionId: number;
 
 
     constructor(option: Option, product: Product, total: number, quantity: number) {

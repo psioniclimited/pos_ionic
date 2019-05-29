@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UpdateService} from '../service/update.service';
 import {AlertController, LoadingController} from '@ionic/angular';
 import {BluetoothPrinterService} from '../bluetooth-printer.service';
+import {SyncService} from '../service/sync.service';
 
 @Component({
     selector: 'app-menu',
@@ -22,7 +23,8 @@ export class MenuPage implements OnInit {
     constructor(private updateService: UpdateService,
                 private alertController: AlertController,
                 private bluetoothPrinterService: BluetoothPrinterService,
-                private loadingController: LoadingController) {
+                private loadingController: LoadingController,
+                private syncService: SyncService) {
     }
 
     ngOnInit() {
@@ -63,6 +65,10 @@ export class MenuPage implements OnInit {
 
     async connectPrinter() {
         await this.bluetoothPrinterService.connectPrinter();
+    }
+
+    async syncData() {
+        await this.syncService.syncData();
     }
 
 }

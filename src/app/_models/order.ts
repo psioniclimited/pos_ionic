@@ -7,6 +7,8 @@ export class Order {
     total: number;
     orderDetails: OrderDetail[];
     client: Client;
+    id: number;
+    clientId: number;
 
     constructor(date: string = '',
                 discount: number = 0,
