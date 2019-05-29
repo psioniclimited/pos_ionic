@@ -2,13 +2,13 @@ import {OrderDetail} from './order-detail';
 import {Client} from './client';
 
 export class Order {
-    date: Date;
+    date: string;
     discount: number;
     total: number;
     orderDetails: OrderDetail[];
     client: Client;
 
-    constructor(date: Date = new Date(),
+    constructor(date: string = '',
                 discount: number = 0,
                 total: number = 0,
                 orderDetails: OrderDetail[] = [],

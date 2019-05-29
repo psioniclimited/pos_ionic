@@ -4,6 +4,7 @@ import {OrderDetail} from '../_models/order-detail';
 import * as _ from 'lodash';
 import {BehaviorSubject} from 'rxjs';
 import {SQLite, SQLiteObject} from '@ionic-native/sqlite/ngx';
+import {formatDate} from '@angular/common';
 
 @Injectable({
     providedIn: 'root'
@@ -23,6 +24,7 @@ export class OrderService {
     setOrder(order: Order) {
         this.order = order;
         if (this.order) {
+            order.date = new Date().toLocaleDateString();
             order.total = this.calculateTotal();
             this.setGrandTotal();
             this.setTotal();
@@ -113,8 +115,93 @@ export class OrderService {
         await this.connect();
         console.log('======');
         console.log(this.order);
+        // creating order first
+        await this.storeOrder().then(async () => {
+            // find the latest order id
+            const lastOrderId = await this.getLastOrderId();
+            // store order details
+            for (let i = 0; i < this.order.orderDetails.length; i++) {
+                if (this.order.orderDetails[i].option) {
+                    // store option and product id
+                    console.log('has option');
+                    await this.storeOderDetailWithOption(lastOrderId,
+                        this.order.orderDetails[i].option,
+                        this.order.orderDetails[i].product,
+                        this.order.orderDetails[i].quantity);
+                } else {
+                    // store only product id
+                    console.log('no option');
+                    await this.storeOderDetailWithNoOption(lastOrderId,
+                        this.order.orderDetails[i].product,
+                        this.order.orderDetails[i].quantity);
+                }
+            }
+
+        }).catch((error) => {
+            console.log(error);
+        });
         // return new Promise((resolve, reject) => {
         //    const orderSql = ""
         // });
     }
+
+    private async storeOrder() {
+        return new Promise((resolve, reject) => {
+            const sql = 'INSERT INTO orders (client_id, total, discount, date) ' +
+                'VALUES (?,?,?,?)';
+            this.db.executeSql(sql, [this.order.client.id, this.order.total, this.order.discount, this.order.date])
+                .then((success) => {
+                    resolve(success);
+                }, (error) => {
+                    console.log('order create error ');
+                    reject(error);
+                });
+        });
+    }
+
+    private async getLastOrderId() {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT MAX(id) as id FROM orders';
+            this.db.executeSql(sql, [])
+                .then((data) => {
+                    if (data.rows.length > 0) {
+                        console.log('order id');
+                        console.log(data.rows.item(0).id);
+                    }
+                    resolve(data.rows.item(0).id);
+                }, (error) => {
+                    console.log('last order id error');
+                    reject(error);
+                });
+        });
+    }
+
+    private async storeOderDetailWithOption(orderId, option, product, quantity) {
+        return new Promise((resolve, reject) => {
+            const sql = 'INSERT INTO order_details (order_id, option_id, product_id, price, quantity) ' +
+                'VALUES (?,?,?,?,?)';
+            this.db.executeSql(sql, [orderId, option.id, product.id, option.price, quantity])
+                .then((success) => {
+                    resolve(success);
+                }, (error) => {
+                    console.log('order detail create error with option');
+                    reject(error);
+                });
+        });
+    }
+
+    private async storeOderDetailWithNoOption(orderId, product, quantity) {
+        return new Promise((resolve, reject) => {
+            const sql = 'INSERT INTO order_details (order_id, product_id, price, quantity) ' +
+                'VALUES (?,?,?,?)';
+            this.db.executeSql(sql, [orderId, product.id, product.salePrice, quantity])
+                .then((success) => {
+                    resolve(success);
+                }, (error) => {
+                    console.log('order detail create error with no option');
+                    reject(error);
+                });
+        });
+    }
+
 }

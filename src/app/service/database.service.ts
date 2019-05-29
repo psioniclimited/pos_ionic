@@ -141,9 +141,10 @@ export class DatabaseService {
         const sql = 'CREATE TABLE IF NOT EXISTS order_details' +
             '(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,' +
             'order_id INTEGER NOT NULL,' +
-            'option_id INTEGER NOT NULL,' +
-            'product_id INTEGER NOT NULL,' +
+            'option_id INTEGER,' +
+            'product_id INTEGER,' +
             'price DECIMAL(15,2),' +
+            'quantity DECIMAL(15,2),' +
             'FOREIGN KEY (order_id) REFERENCES orders(id),' +
             'FOREIGN KEY (option_id) REFERENCES options(id),' +
             'FOREIGN KEY (product_id) REFERENCES products(id))';

@@ -5,8 +5,6 @@ import {Router} from '@angular/router';
 import {ClientService} from '../service/client.service';
 import {Client} from '../_models/client';
 import {ModalController} from '@ionic/angular';
-import {Product} from '../_models/product';
-import {ProductSelectionModalPage} from '../product-selection-modal/product-selection-modal.page';
 import {DiscountModalPage} from '../discount-modal/discount-modal.page';
 
 @Component({
