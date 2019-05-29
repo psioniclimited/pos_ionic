@@ -18,6 +18,7 @@ export class CartPage implements OnInit {
     discount: number;
     grandTotal: number;
     client: Client;
+    orderSubmit = false;
 
     constructor(private orderService: OrderService,
                 private clientService: ClientService,
@@ -40,6 +41,7 @@ export class CartPage implements OnInit {
     }
 
     ionViewWillEnter() {
+        this.orderSubmit = false;
     }
 
     calculateItemTotal(orderDetail) {
@@ -97,7 +99,20 @@ export class CartPage implements OnInit {
         return '';
     }
 
-    confirmOrder() {
-        console.log(this.orderService.createOrder());
+    async confirmOrder() {
+        await this.orderService.createOrder().then(() => {
+            this.orderSubmit = true;
+        }).catch((error) => {
+            console.log('orders not stored');
+            console.log(error);
+        });
+    }
+
+    printToken() {
+        console.log('print token');
+    }
+
+    printReceipt() {
+        console.log('print receipt');
     }
 }
