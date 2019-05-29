@@ -114,33 +114,36 @@ export class OrderService {
     public async createOrder() {
         await this.connect();
         // creating order first
-        await this.insertOrder().then(async () => {
-            // find the latest order id
-            const lastOrderId = await this.getLastOrderId();
-            // store order details
-            for (let i = 0; i < this.order.orderDetails.length; i++) {
-                if (this.order.orderDetails[i].option) {
-                    // store option and product id
-                    await this.storeOrderDetailWithOption(
-                        lastOrderId,
-                        this.order.orderDetails[i].option,
-                        this.order.orderDetails[i].product,
-                        this.order.orderDetails[i].quantity
-                    );
-                } else {
-                    // store only product id
-                    console.log('no option');
-                    await this.storeOrderDetailWithNoOption(
-                        lastOrderId,
-                        this.order.orderDetails[i].product,
-                        this.order.orderDetails[i].quantity
-                    );
+        return new Promise(async (resolve, reject) => {
+            await this.insertOrder().then(async () => {
+                // find the latest order id
+                const lastOrderId = await this.getLastOrderId();
+                // store order details
+                for (let i = 0; i < this.order.orderDetails.length; i++) {
+                    if (this.order.orderDetails[i].option) {
+                        // store option and product id
+                        await this.storeOrderDetailWithOption(
+                            lastOrderId,
+                            this.order.orderDetails[i].option,
+                            this.order.orderDetails[i].product,
+                            this.order.orderDetails[i].quantity
+                        );
+                    } else {
+                        // store only product id
+                        console.log('no option');
+                        await this.storeOrderDetailWithNoOption(
+                            lastOrderId,
+                            this.order.orderDetails[i].product,
+                            this.order.orderDetails[i].quantity
+                        );
+                    }
                 }
-            }
-
-        }).catch((error) => {
-            console.log(error);
+                resolve(lastOrderId);
+            }).catch((error) => {
+                console.log(error);
+            });
         });
+
         // return new Promise((resolve, reject) => {
         //    const orderSql = ""
         // });

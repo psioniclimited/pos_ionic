@@ -20,7 +20,7 @@ import {BluetoothSerial} from '@ionic-native/bluetooth-serial/ngx';
     entryComponents: [],
     imports: [
         BrowserModule,
-        IonicModule.forRoot(),
+        IonicModule.forRoot({hardwareBackButton: false}),
         AppRoutingModule,
         ProductSelectionModalPageModule,
         DiscountModalPageModule

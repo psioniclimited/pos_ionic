@@ -48,6 +48,12 @@ export class CartPage implements OnInit {
         this.orderSubmit = false;
     }
 
+    ionViewDidEnter() {
+        document.addEventListener('backbutton', (e) => {
+            console.log('disable back button');
+        }, false);
+    }
+
     calculateItemTotal(orderDetail) {
         if (orderDetail.option) {
             return orderDetail.option.price * orderDetail.quantity;
@@ -107,12 +113,18 @@ export class CartPage implements OnInit {
         const order = this.orderService.getOrder();
         if (order.client.id == 0) {
             this.selectCustomer();
+        } else {
+            await this.orderService.createOrder().then((orderId) => {
+                this.orderSubmit = true;
+                console.log('============== order id');
+                console.log(orderId);
+                this.bluetoothSerial.isConnected().then((data) => {
+                    this.bluetoothSerial.write('\x1B\x21\x30TOKEN NUMBER: ' + orderId + ' \n\n\n\n').then();
+                });
+            }).catch((error) => {
+                console.log(error);
+            });
         }
-        await this.orderService.createOrder().then(() => {
-            this.orderSubmit = true;
-        }).catch((error) => {
-            console.log(error);
-        });
     }
 
     async printToken() {
