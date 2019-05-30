@@ -2,6 +2,10 @@ import {Injectable} from '@angular/core';
 import {SQLite, SQLiteObject} from '@ionic-native/sqlite/ngx';
 import {Order} from '../_models/order';
 import {OrderDetail} from '../_models/order-detail';
+import {ENV} from '../_config/config';
+import {AuthService} from './auth.service';
+import {HTTP} from '@ionic-native/http/ngx';
+import {Platform} from '@ionic/angular';
 
 @Injectable({
     providedIn: 'root'
@@ -11,8 +15,18 @@ export class SyncService {
     private isOpen: boolean;
     orderCollection: Order[];
     orderListCollection = false;
+    syncAPI = ENV.API_ENDPOINT + '/mobileapi/order';
+    private token = '';
+    serverErrorCode = 0;
 
-    constructor(private sqlStorage: SQLite) {
+    constructor(private sqlStorage: SQLite,
+                private authService: AuthService,
+                private http: HTTP,
+                private platform: Platform) {
+
+        this.platform.ready().then(async () => {
+            await this.getToken();
+        });
     }
 
     async syncData() {
@@ -26,14 +40,14 @@ export class SyncService {
             }
             let length: any = 0;
             await this.getOrders(lastOderId).then((data) => {
-                console.log('length ==============');
-                console.log(data);
+                // console.log('length ==============');
+                // console.log(data);
                 length = data;
             });
             if (length !== 0) {
-                // send to server
+                const isDataSent = await this.sendOrderCollectionTOServer();
                 for (let i = 0; i < this.orderCollection.length; i++) {
-                    console.log(this.orderCollection[i]);
+                    console.log(JSON.stringify(this.orderCollection[i]));
                 }
                 // if data sent delete data
             } else {
@@ -111,6 +125,25 @@ export class SyncService {
 
     }
 
+    private async sendOrderCollectionTOServer() {
+        const headers = {
+            Authorization: 'Bearer ' + this.token
+        };
+
+        return new Promise((resolve, reject) => {
+            this.http.post(this.syncAPI, {data: this.orderCollection}, headers).then(async (res) => {
+                console.log('server response');
+                console.log(res);
+                resolve(true);
+            }, (error) => {
+                this.serverErrorCode = error.status;
+                console.log('server error');
+                console.log(error);
+                reject(false);
+            });
+        });
+    }
+
     private async connect() {
         if (!this.isOpen) {
             this.sqlStorage = new SQLite();
@@ -122,5 +155,14 @@ export class SyncService {
 
             });
         }
+    }
+
+    private async getToken() {
+        await this.authService.getToken().then((data) => {
+            this.token = data;
+        }).catch((error) => {
+            console.log('token fetch error');
+            console.log(error);
+        });
     }
 }
