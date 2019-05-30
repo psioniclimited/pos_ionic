@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {OrderService} from '../service/order.service';
+import {ModalController} from '@ionic/angular';
 
 @Component({
     selector: 'app-discount-modal',
@@ -9,7 +10,7 @@ import {OrderService} from '../service/order.service';
 export class DiscountModalPage implements OnInit {
     @Input() discount: any;
 
-    constructor(private orderService: OrderService) {
+    constructor(private orderService: OrderService, private modalController: ModalController) {
     }
 
     ngOnInit() {
@@ -17,6 +18,7 @@ export class DiscountModalPage implements OnInit {
 
     setDiscount() {
         this.orderService.setDiscount(this.discount);
+        this.modalController.dismiss().catch();
     }
 
 }
