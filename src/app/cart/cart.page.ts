@@ -32,7 +32,13 @@ export class CartPage implements OnInit {
 
     ngOnInit() {
         // this.order = new Order();
+    }
+
+    ionViewWillEnter() {
+        this.orderSubmit = false;
         this.order = this.orderService.getOrder();
+        console.log('getting order ======');
+        console.log(this.order);
         this.orderService.total.subscribe((total) => {
             this.total = total;
         });
@@ -42,10 +48,6 @@ export class CartPage implements OnInit {
         this.orderService.grandTotal.subscribe((grandTotal) => {
             this.grandTotal = grandTotal;
         });
-    }
-
-    ionViewWillEnter() {
-        this.orderSubmit = false;
     }
 
     ionViewDidEnter() {
@@ -111,16 +113,14 @@ export class CartPage implements OnInit {
 
     async confirmOrder() {
         const order = this.orderService.getOrder();
-        if (order.client.id == 0) {
+        if (order.client.id === 0) {
             this.selectCustomer();
         } else {
             await this.orderService.createOrder().then((orderId) => {
                 this.orderSubmit = true;
-                console.log('============== order id');
-                console.log(orderId);
-                this.bluetoothSerial.isConnected().then((data) => {
-                    this.bluetoothSerial.write('\x1B\x21\x30TOKEN NUMBER: ' + orderId + ' \n\n\n\n').then();
-                });
+                // this.bluetoothSerial.isConnected().then((data) => {
+                //     this.bluetoothSerial.write('\x1B\x21\x30TOKEN NUMBER: ' + orderId + ' \n\n\n\n').then();
+                // });
             }).catch((error) => {
                 console.log(error);
             });

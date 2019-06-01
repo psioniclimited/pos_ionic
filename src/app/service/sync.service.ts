@@ -45,9 +45,11 @@ export class SyncService {
                 length = data;
             });
             if (length !== 0) {
-                const isDataSent = await this.sendOrderCollectionTOServer();
+                const isDataSent = await this.sendOrderCollectionTOServer().then().catch((error) => {
+                    console.log(error);
+                });
                 for (let i = 0; i < this.orderCollection.length; i++) {
-                    console.log(JSON.stringify(this.orderCollection[i]));
+                    // console.log(JSON.stringify(this.orderCollection[i]));
                 }
                 // if data sent delete data
             } else {
