@@ -32,6 +32,7 @@ export class CartPage implements OnInit {
 
     ngOnInit() {
         // this.order = new Order();
+        this.order = this.orderService.getOrder();
     }
 
     ionViewWillEnter() {
