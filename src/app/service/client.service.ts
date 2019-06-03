@@ -18,8 +18,8 @@ export class ClientService {
     }
 
     public setClient(client) {
+        this.client = client;
         if (client) {
-            this.client = client;
             this.orderService.setDiscount(client.discount);
         } else {
             this.orderService.setDiscount(0);

@@ -104,11 +104,10 @@ export class SyncService {
                 .then(async (data) => {
                     if (data.rows.length > 0) {
                         for (let i = 0; i < data.rows.length; i++) {
-                            // data.rows.item(i).date,
                             const orderDetail = new OrderDetail(
                                 null,
                                 null,
-                                data.rows.item(i).total,
+                                data.rows.item(i).price,
                                 data.rows.item(i).quantity,
                             );
                             orderDetail.productId = data.rows.item(i).product_id;

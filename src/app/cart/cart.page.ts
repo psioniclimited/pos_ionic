@@ -156,7 +156,7 @@ export class CartPage implements OnInit {
     }
 
     orderDone() {
-        // this.clientService.setClient(null);
+        this.clientService.setClient(null);
         this.orderService.setOrder(null);
         this.router.navigate(['menu']);
     }
