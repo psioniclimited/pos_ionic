@@ -3,6 +3,7 @@ import {Order} from '../_models/order';
 import * as _ from 'lodash';
 import {BehaviorSubject} from 'rxjs';
 import {SQLite, SQLiteObject} from '@ionic-native/sqlite/ngx';
+import {Client} from "../_models/client";
 
 @Injectable({
     providedIn: 'root'
@@ -215,17 +216,18 @@ export class OrderService {
         await this.connect();
         let sql = "SELECT orders.id as orderId," +
             "orders.total," +
-            "orders.discount," +
+            "orders.discount as orderDiscount," +
             "orders.date," +
             "clients.id as clientId," +
             "clients.name," +
             "clients.email," +
             "clients.phone," +
-            "clients.discount," +
+            "clients.discount as clientDiscount," +
             "clients.address " +
             "FROM orders " +
             "JOIN clients ON clients.id = orders.client_id ";
         return new Promise((resolve, reject) => {
+            const orderCollection: Order[] = [];
             if (customerName.length > 0) {
                 console.log('in customer name');
                 sql = sql + "WHERE clients.name '%" + customerName + "%' AND orders.id > " + orderId + " LIMIT " + limit;
@@ -236,10 +238,27 @@ export class OrderService {
             this.db.executeSql(sql, []).then((data) => {
                 if (data.rows.length > 0) {
                     for (let i = 0; i < data.rows.length; i++) {
-                        console.log(data.rows.item(i));
+                        const order = new Order(
+                            data.rows.item(i).date,
+                            data.rows.item(i).orderDiscount,
+                            data.rows.item(i).total,
+                            null,
+                            null
+                        );
+                        order.id = data.rows.item(i).orderId;
+                        order.clientId = data.rows.item(i).clientId;
+                        const orderClient = new Client(
+                            data.rows.item(i).clientId,
+                            data.rows.item(i).name,
+                            data.rows.item(i).email,
+                            data.rows.item(i).clientDiscount,
+                            data.rows.item(i).address,
+                        );
+                        order.client = orderClient;
+                        orderCollection.push(order);
                     }
                 }
-                resolve('ss');
+                resolve(orderCollection);
             }).catch((error) => {
                 console.log('order fetching error');
                 console.log(error);
