@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 
 import {IonicModule} from '@ionic/angular';
 
@@ -20,9 +20,12 @@ const routes: Routes = [
             {
                 path: 'pos',
                 loadChildren: '../pos/pos.module#PosPageModule'
-            }
+            },
+            {   path: 'orderHistory',
+                loadChildren: '../order-history/order-history.module#OrderHistoryPageModule'
+            },
         ]
-    }
+    },
 ];
 
 @NgModule({

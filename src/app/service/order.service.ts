@@ -1,10 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Order} from '../_models/order';
-import {OrderDetail} from '../_models/order-detail';
 import * as _ from 'lodash';
 import {BehaviorSubject} from 'rxjs';
 import {SQLite, SQLiteObject} from '@ionic-native/sqlite/ngx';
-import {formatDate} from '@angular/common';
 
 @Injectable({
     providedIn: 'root'
@@ -211,6 +209,44 @@ export class OrderService {
                     reject(error);
                 });
         });
+    }
+
+    public async getOrdersFromDB(orderId: number = 0, customerName: string = '', limit: number = 20) {
+        await this.connect();
+        let sql = "SELECT orders.id as orderId," +
+            "orders.total," +
+            "orders.discount," +
+            "orders.date," +
+            "clients.id as clientId," +
+            "clients.name," +
+            "clients.email," +
+            "clients.phone," +
+            "clients.discount," +
+            "clients.address " +
+            "FROM orders " +
+            "JOIN clients ON clients.id = orders.client_id ";
+        return new Promise((resolve, reject) => {
+            if (customerName.length > 0) {
+                console.log('in customer name');
+                sql = sql + "WHERE clients.name '%" + customerName + "%' AND orders.id > " + orderId + " LIMIT " + limit;
+            } else {
+                console.log('in order ');
+                sql = sql + "WHERE orders.id > " + orderId + " LIMIT " + limit;
+            }
+            this.db.executeSql(sql, []).then((data) => {
+                if (data.rows.length > 0) {
+                    for (let i = 0; i < data.rows.length; i++) {
+                        console.log(data.rows.item(i));
+                    }
+                }
+                resolve('ss');
+            }).catch((error) => {
+                console.log('order fetching error');
+                console.log(error);
+                reject(error);
+            });
+        });
+
     }
 
 }

@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {UpdateService} from '../service/update.service';
-import {AlertController, LoadingController} from '@ionic/angular';
+import {AlertController, LoadingController, NavController} from '@ionic/angular';
 import {BluetoothPrinterService} from '../bluetooth-printer.service';
 import {SyncService} from '../service/sync.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-menu',
@@ -17,6 +18,11 @@ export class MenuPage implements OnInit {
             title: 'Pos',
             url: '/menu/pos',
             icon: 'home'
+        },
+        {
+            title: 'Order History',
+            url: '/menu/orderHistory',
+            icon: 'home'
         }
     ];
 
@@ -24,7 +30,9 @@ export class MenuPage implements OnInit {
                 private alertController: AlertController,
                 private bluetoothPrinterService: BluetoothPrinterService,
                 private loadingController: LoadingController,
-                private syncService: SyncService) {
+                private syncService: SyncService,
+                private router: Router,
+                private navCtrl: NavController) {
     }
 
     ngOnInit() {
