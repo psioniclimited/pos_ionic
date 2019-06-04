@@ -3,12 +3,28 @@
         <ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <ion-title>Order History</ion-title>
+        <ion-searchbar  clearIcon autocomplete="on" (ionInput)="getHistory($event)" placeholder="Client Name"></ion-searchbar>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+    <ion-list no-margin no-padding>
+        <ion-item *ngFor="let order of orderCollection" >
+            <ion-grid class="product-group">
+                <ion-row>
+                    <ion-col size="12" no-margin no-padding class="product-col-name">
+                        <p class="product-name">Order id: {{order.id}}</p>
+                    </ion-col>
+                    <ion-col size="12" no-margin no-padding class="product-col-name">
+                        <p>Client name: {{order.client.name}}<span style="float: right;">Total: {{order.total}}</span></p>
+                    </ion-col>
+                    <ion-col size="12" no-margin no-padding>
+                        <p>Date: {{order.date}}<span style="float: right;">Discount: {{order.discount}}</span></p>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-item>
+    </ion-list>
 </ion-content>
 
 

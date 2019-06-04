@@ -230,7 +230,8 @@ export class OrderService {
             const orderCollection: Order[] = [];
             if (customerName.length > 0) {
                 console.log('in customer name');
-                sql = sql + "WHERE clients.name '%" + customerName + "%' AND orders.id > " + orderId + " LIMIT " + limit;
+                sql = sql + "WHERE clients.name LIKE '%" + customerName + "%' AND orders.id > " + orderId + " LIMIT " + limit;
+                console.log(sql);
             } else {
                 console.log('in order ');
                 sql = sql + "WHERE orders.id > " + orderId + " LIMIT " + limit;
