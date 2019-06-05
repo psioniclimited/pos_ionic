@@ -14,6 +14,7 @@ import {SQLite} from '@ionic-native/sqlite/ngx';
 import {ProductSelectionModalPageModule} from './product-selection-modal/product-selection-modal.module';
 import {DiscountModalPageModule} from './discount-modal/discount-modal.module';
 import {BluetoothSerial} from '@ionic-native/bluetooth-serial/ngx';
+import {OrderDetailModalPageModule} from './order-history/order-detail-modal/order-detail-modal.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -23,7 +24,8 @@ import {BluetoothSerial} from '@ionic-native/bluetooth-serial/ngx';
         IonicModule.forRoot({hardwareBackButton: false}),
         AppRoutingModule,
         ProductSelectionModalPageModule,
-        DiscountModalPageModule
+        DiscountModalPageModule,
+        OrderDetailModalPageModule
     ],
     providers: [
         StatusBar,

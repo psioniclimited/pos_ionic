@@ -1,7 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {OrderService} from '../service/order.service';
-import {IonInfiniteScroll} from "@ionic/angular";
-import {Order} from "../_models/order";
+import {IonInfiniteScroll, ModalController} from '@ionic/angular';
+import {Order} from '../_models/order';
+import {OrderDetailModalPage} from './order-detail-modal/order-detail-modal.page';
 
 @Component({
     selector: 'app-order-history',
@@ -12,13 +13,13 @@ export class OrderHistoryPage implements OnInit {
     @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
     orderCollection: any;
 
-    constructor(private orderService: OrderService) {
+    constructor(private orderService: OrderService,
+                private modalController: ModalController) {
     }
 
     async ngOnInit() {
         await this.orderService.getOrdersFromDB(0).then((data) => {
             this.orderCollection = data;
-            console.log(data);
         }).catch((error) => {
             console.log('error in order fetching');
             console.log(error);
@@ -50,6 +51,16 @@ export class OrderHistoryPage implements OnInit {
 
         event.target.complete();
 
+    }
+
+    public async showOrderDetail(id: number) {
+        console.log('order id ==================');
+        console.log(id);
+        const modal = await this.modalController.create({
+            component: OrderDetailModalPage,
+            componentProps: {product: 'testing'}
+        });
+        return await modal.present();
     }
 
 }

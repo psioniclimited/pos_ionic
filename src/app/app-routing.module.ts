@@ -12,8 +12,8 @@ const routes: Routes = [
         path: 'customer-selection-modal',
         loadChildren: './customer-selection-modal/customer-selection-modal.module#CustomerSelectionModalPageModule'
     },
-  { path: 'discount-modal', loadChildren: './discount-modal/discount-modal.module#DiscountModalPageModule' },
-  { path: 'order-detail-modal', loadChildren: './order-history/order-detail-modal/order-detail-modal.module#OrderDetailModalPageModule' },
+    {path: 'discount-modal', loadChildren: './discount-modal/discount-modal.module#DiscountModalPageModule'},
+    { path: 'order-detail-modal', loadChildren: './order-history/order-detail-modal/order-detail-modal.module#OrderDetailModalPageModule' },
 ];
 
 @NgModule({
