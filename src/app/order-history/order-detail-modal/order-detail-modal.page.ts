@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {ModalController} from '@ionic/angular';
 
 @Component({
     selector: 'app-order-detail-modal',
@@ -8,10 +9,14 @@ import {Component, Input, OnInit} from '@angular/core';
 export class OrderDetailModalPage implements OnInit {
     @Input() product: any;
 
-    constructor() {
+    constructor(private modalController: ModalController) {
     }
 
     ngOnInit() {
+    }
+
+    dismiss() {
+        this.modalController.dismiss().catch();
     }
 
 }
