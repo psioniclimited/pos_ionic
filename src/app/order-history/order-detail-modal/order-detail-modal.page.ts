@@ -7,12 +7,13 @@ import {ModalController} from '@ionic/angular';
     styleUrls: ['./order-detail-modal.page.scss'],
 })
 export class OrderDetailModalPage implements OnInit {
-    @Input() product: any;
+    @Input() orderCollection: any;
 
     constructor(private modalController: ModalController) {
     }
 
     ngOnInit() {
+        console.log(this.orderCollection);
     }
 
     dismiss() {

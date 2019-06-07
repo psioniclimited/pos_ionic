@@ -9,7 +9,7 @@
 
 <ion-content>
     <ion-list no-margin no-padding>
-        <ion-item *ngFor="let order of orderCollection" (click)="showOrderDetail(order.id)">
+        <ion-item *ngFor="let order of orderCollection; let i = index" (click)="showOrderDetail(i)">
             <ion-grid class="product-group">
                 <ion-row>
                     <ion-col size="12" no-margin no-padding class="product-col-name">

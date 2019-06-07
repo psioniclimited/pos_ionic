@@ -53,12 +53,10 @@ export class OrderHistoryPage implements OnInit {
 
     }
 
-    public async showOrderDetail(id: number) {
-        console.log('order id ==================');
-        console.log(id);
+    public async showOrderDetail(index: number) {
         const modal = await this.modalController.create({
             component: OrderDetailModalPage,
-            componentProps: {product: 'testing'}
+            componentProps: {orderCollection: this.orderCollection[index]}
         });
         return await modal.present();
     }
