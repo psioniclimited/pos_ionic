@@ -48,8 +48,15 @@ export class SyncService {
                 const isDataSent = await this.sendOrderCollectionTOServer().then().catch((error) => {
                     console.log(error);
                 });
-                for (let i = 0; i < this.orderCollection.length; i++) {
-                    // console.log(JSON.stringify(this.orderCollection[i]));
+                if (isDataSent) {
+                    for (let i = 0; i < this.orderCollection.length; i++) {
+                        console.log('deleting order details');
+                        await this.deleteOrderDetail(this.orderCollection[i].id);
+                        console.log('deleting orders');
+                        await this.deleteOrder(this.orderCollection[i].id);
+                    }
+                } else {
+                    console.log('data sent not deleting');
                 }
                 // if data sent delete data
             } else {
@@ -165,6 +172,31 @@ export class SyncService {
         }).catch((error) => {
             console.log('token fetch error');
             console.log(error);
+        });
+    }
+
+    private async deleteOrderDetail(id: number) {
+        // deleting order_details
+        const orderDetailsSql = 'DELETE FROM order_details WHERE order_id = ?';
+        return new Promise((resolve, reject) => {
+            this.db.executeSql(orderDetailsSql, [id]).then((data) => {
+                resolve(data);
+            }).catch((error) => {
+                console.log(error);
+                reject(error);
+            });
+        });
+    }
+
+    private async deleteOrder(id: number) {
+        const sql = 'DELETE FROM orders WHERE id = ?';
+        return new Promise((resolve, reject) => {
+            this.db.executeSql(sql, [id]).then((data) => {
+                resolve(data);
+            }).catch((error) => {
+                console.log(error);
+                reject(error);
+            });
         });
     }
 }
