@@ -56,6 +56,7 @@ export class SyncService {
                 if (this.orderListCollection) {
                     // reset auto increment
                 }
+                console.log('sync done =======');
                 break;
             }
 

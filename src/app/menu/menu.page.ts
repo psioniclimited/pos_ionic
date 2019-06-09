@@ -76,7 +76,12 @@ export class MenuPage implements OnInit {
     }
 
     async syncData() {
+        const loading = await this.loadingController.create({
+            message: 'Syncing'
+        });
+        await loading.present();
         await this.syncService.syncData();
+        loading.dismiss();
     }
 
 }
