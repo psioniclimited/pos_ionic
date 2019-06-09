@@ -5,7 +5,7 @@
             </ion-back-button>
         </ion-buttons>
         <ion-title>Cart</ion-title>
-        <ion-button slot="end" (click)="selectCustomer()">
+        <ion-button slot="end" (click)="selectCustomer()" [disabled]="orderSubmit">
             {{ getClient() }}
             <ion-icon slot="end" name="person-add"></ion-icon>
         </ion-button>
@@ -16,20 +16,20 @@
     <ion-list no-margin no-padding>
         <ion-item *ngFor="let orderDetail of order.orderDetails; let i = index">
       <span>
-        <ion-button (click)="decreaseQuantity(i)" fill="clear">
+        <ion-button (click)="decreaseQuantity(i)" [disabled]="orderSubmit" fill="clear">
           <ion-icon name="remove"></ion-icon>
         </ion-button>
       </span>
             <span>{{ orderDetail.quantity }}</span>
             <span>
-        <ion-button (click)="increaseQuantity(i)" fill="clear">
+        <ion-button (click)="increaseQuantity(i)" [disabled]="orderSubmit" fill="clear">
           <ion-icon name="add"></ion-icon>
         </ion-button>
       </span>
             <span>{{ getDescription(orderDetail) }}</span>
-            <span slot="end">{{ calculateItemTotal(orderDetail) }} -
+            <span slot="end">{{ calculateItemTotal(orderDetail) }}
         <span>
-          <ion-button fill="clear" (click)="removeOrderDetail(i)">
+          <ion-button fill="clear" [disabled]="orderSubmit" (click)="removeOrderDetail(i)">
           <ion-icon name="trash"></ion-icon>
         </ion-button>
         </span>

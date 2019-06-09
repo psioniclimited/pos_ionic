@@ -4,7 +4,7 @@ import {NativeStorage} from '@ionic-native/native-storage/ngx';
 import {AuthService} from '../service/auth.service';
 import {Creds} from '../_models/Creds';
 import {Router} from '@angular/router';
-import {NavController} from '@ionic/angular';
+import {LoadingController, NavController} from '@ionic/angular';
 
 @Component({
     selector: 'app-login',
@@ -18,7 +18,8 @@ export class LoginPage implements OnInit {
     constructor(private authenticationService: AuthService,
                 private storage: NativeStorage,
                 private router: Router,
-                private navCtrl: NavController) {
+                private navCtrl: NavController,
+                private loadingController: LoadingController) {
     }
 
     ngOnInit() {
@@ -42,16 +43,21 @@ export class LoginPage implements OnInit {
     }
 
     async onSubmit() {
+        const loading = await this.loadingController.create({
+            message: 'Logging....',
+        });
         if (this.loginForm.valid) {
             const creds = new Creds(
                 this.loginForm.value.email,
                 this.loginForm.value.password
             );
+            await loading.present();
             await this.authenticationService.login(creds).then(data => {
                 console.log(data);
             });
-            this.authenticationService.authenticationState.subscribe(state => {
+            this.authenticationService.authenticationState.subscribe(async (state) => {
                 if (state) {
+                    await loading.dismiss();
                     this.navCtrl.navigateRoot(['menu']);
                 }
             });
