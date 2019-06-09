@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ModalController} from '@ionic/angular';
+import {OrderService} from '../../service/order.service';
 
 @Component({
     selector: 'app-order-detail-modal',
@@ -8,12 +9,20 @@ import {ModalController} from '@ionic/angular';
 })
 export class OrderDetailModalPage implements OnInit {
     @Input() orderCollection: any;
+    orderDetails: any;
 
-    constructor(private modalController: ModalController) {
+    constructor(private modalController: ModalController,
+                private orderService: OrderService) {
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         console.log(this.orderCollection);
+        await this.orderService.getOrderDetails(this.orderCollection.id).then((data) => {
+        this.orderDetails = data;
+        console.log(this.orderDetails);
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 
     dismiss() {

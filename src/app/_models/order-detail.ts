@@ -10,7 +10,7 @@ export class OrderDetail {
     optionId: number;
 
 
-    constructor(option: Option, product: Product, total: number, quantity: number) {
+    constructor(option: Option = null, product: Product = null, total: number = 0, quantity: number = 0) {
         this.option = option;
         this.product = product;
         this.total = total;

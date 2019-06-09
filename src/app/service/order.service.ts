@@ -3,7 +3,10 @@ import {Order} from '../_models/order';
 import * as _ from 'lodash';
 import {BehaviorSubject} from 'rxjs';
 import {SQLite, SQLiteObject} from '@ionic-native/sqlite/ngx';
-import {Client} from "../_models/client";
+import {Client} from '../_models/client';
+import {OrderDetail} from '../_models/order-detail';
+import {Product} from '../_models/product';
+import {Option} from '../_models/option';
 
 @Injectable({
     providedIn: 'root'
@@ -214,24 +217,24 @@ export class OrderService {
 
     public async getOrdersFromDB(orderId: number = 0, customerName: string = '', limit: number = 20) {
         await this.connect();
-        let sql = "SELECT orders.id as orderId," +
-            "orders.total," +
-            "orders.discount as orderDiscount," +
-            "orders.date," +
-            "clients.id as clientId," +
-            "clients.name," +
-            "clients.email," +
-            "clients.phone," +
-            "clients.discount as clientDiscount," +
-            "clients.address " +
-            "FROM orders " +
-            "JOIN clients ON clients.id = orders.client_id ";
+        let sql = 'SELECT orders.id as orderId,' +
+            'orders.total,' +
+            'orders.discount as orderDiscount,' +
+            'orders.date,' +
+            'clients.id as clientId,' +
+            'clients.name,' +
+            'clients.email,' +
+            'clients.phone,' +
+            'clients.discount as clientDiscount,' +
+            'clients.address ' +
+            'FROM orders ' +
+            'JOIN clients ON clients.id = orders.client_id ';
         return new Promise((resolve, reject) => {
             const orderCollection: Order[] = [];
             if (customerName.length > 0) {
-                sql = sql + "WHERE clients.name LIKE '%" + customerName + "%' AND orders.id > " + orderId + " LIMIT " + limit;
+                sql = sql + 'WHERE clients.name LIKE \'%' + customerName + '%\' AND orders.id > ' + orderId + ' LIMIT ' + limit;
             } else {
-                sql = sql + "WHERE orders.id > " + orderId + " LIMIT " + limit;
+                sql = sql + 'WHERE orders.id > ' + orderId + ' LIMIT ' + limit;
             }
             this.db.executeSql(sql, []).then((data) => {
                 if (data.rows.length > 0) {
@@ -264,6 +267,67 @@ export class OrderService {
             });
         });
 
+    }
+
+    public async getOrderDetails(orderId: number) {
+        await this.connect();
+        console.log('in order details');
+        const sql = 'SELECT order_details.id as detailsId,' +
+            'order_details.option_id as optionId,' +
+            'order_details.order_id as orderId,' +
+            'order_details.product_id as productId,' +
+            'order_details.price as detailsPrice,' +
+            'order_details.quantity as detailsQuantity,' +
+            'products.name as productName,' +
+            'products.description as productDescription,' +
+            'options.id as optionId,' +
+            'options.type as optionType,' +
+            'options.price as optionPrice ' +
+            'FROM order_details ' +
+            'JOIN products ON products.id = order_details.product_id ' +
+            'LEFT JOIN options ON options.product_id = products.id ' +
+            'WHERE order_details.order_id = ' + orderId;
+
+        return new Promise((resolve, reject) => {
+            const orderDetails: OrderDetail [] = [];
+            this.db.executeSql(sql, []).then((data) => {
+                if (data.rows.length > 0) {
+                    for (let i = 0; i < data.rows.length; i++) {
+                        const option = new Option(
+                            data.rows.item(i).optionId,
+                            data.rows.item(i).productId,
+                            data.rows.item(i).optionType,
+                            data.rows.item(i).optionPrice,
+                        );
+                        const product = new Product(
+                            data.rows.item(i).productId,
+                            '',
+                            data.rows.item(i).productName,
+                            0,
+                            0,
+                            data.rows.item(i).productDescription,
+                            0,
+                            0,
+                            ''
+                        );
+                        const orderDetail = new OrderDetail(
+                            option,
+                            product,
+                            data.rows.item(i).detailsPrice,
+                            data.rows.item(i).detailsQuantity
+                        );
+                        orderDetail.productId = data.rows.item(i).productId;
+                        orderDetail.optionId = data.rows.item(i).optionId;
+                        orderDetails.push(orderDetail);
+                    }
+                }
+                resolve(orderDetails);
+            }).catch((error) => {
+                console.log('order details error');
+                console.log(error);
+                reject(error);
+            });
+        });
     }
 
 }
