@@ -8,6 +8,7 @@ import {ModalController} from '@ionic/angular';
 import {DiscountModalPage} from '../discount-modal/discount-modal.page';
 import {BluetoothSerial} from '@ionic-native/bluetooth-serial/ngx';
 import {BluetoothPrinterService} from '../bluetooth-printer.service';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-cart',
@@ -122,9 +123,9 @@ export class CartPage implements OnInit {
         } else {
             await this.orderService.createOrder().then((orderId) => {
                 this.orderSubmit = true;
-                // this.bluetoothSerial.isConnected().then((data) => {
-                //     this.bluetoothSerial.write('\x1B\x21\x30TOKEN NUMBER: ' + orderId + ' \n\n\n\n').then();
-                // });
+                this.bluetoothSerial.isConnected().then((data) => {
+                    this.bluetoothSerial.write('\x1B\x21\x30TOKEN NUMBER: ' + orderId + ' \n\n\n\n').then();
+                });
             }).catch((error) => {
                 console.log(error);
             });
@@ -133,11 +134,11 @@ export class CartPage implements OnInit {
 
     async printToken() {
         this.bluetoothSerial.isConnected().then((data) => {
-                // const format = new Uint8Array(3);
-                // format[0] = 0x1B;
-                // format[1] = 0x21;
-                // format[2] = 0x00;
-                // this.bluetoothSerial.write(format).then();
+                const format = new Uint8Array(3);
+                format[0] = 0x1B;
+                format[1] = 0x21;
+                format[2] = 0x00;
+                this.bluetoothSerial.write(format).then();
                 this.bluetoothSerial.write('\x1B\x21\x30HelloWord \n\n\n\n').then();
             }
         );
@@ -154,8 +155,57 @@ export class CartPage implements OnInit {
 
     }
 
-    printReceipt() {
-        console.log('print receipt');
+    async printReceipt() {
+        this.bluetoothSerial.isConnected().then((data) => {
+                // print header
+                let printData = '\x1B\x21\x08';
+                printData += 'Item';
+                for (let i = 4; i < 22; i++) {
+                    printData += ' ';
+                }
+                printData += 'Qty  ';
+                printData += 'Price\n';
+                printData += '\x1B\x21\x00';
+                // print order;
+                _.forEach(this.order.orderDetails, (value) => {
+                    printData += value.product.name;
+                    const productNameLength = value.product.name.length;
+                    for (let i = productNameLength; i < 24; i++) {
+                        printData += ' ';
+                    }
+                    // make space dynamic
+                    printData += value.quantity + '  ';
+                    if (value.option) {
+                        printData += value.option.price * value.quantity + '\n';
+                        printData += value.option.type + '\n';
+                    } else {
+                        printData += value.product.salePrice * value.quantity + '\n';
+                    }
+                });
+                for (let i = 0; i < 32; i++) {
+                    printData += '-';
+                }
+                printData += '\n';
+                // print footer
+                const subTotalText = 'Subtotal: ' + this.order.total;
+                for (let i = subTotalText.length; i < 31; i++) {
+                    printData += ' ';
+                }
+                printData += subTotalText + '\n';
+                const discountText = 'Discount: ' + this.order.discount + '%';
+                for (let i = discountText.length; i < 29; i++) {
+                    printData += ' ';
+                }
+                printData += discountText + '\n';
+                const total = this.order.total - (this.order.total * this.order.discount) / 100;
+                const totalText = 'Total: ' + total;
+                for (let i = totalText.length; i < 31; i++) {
+                    printData += ' ';
+                }
+                printData += totalText + '\n';
+                this.bluetoothSerial.write(printData).then();
+            }
+        );
     }
 
     orderDone() {
