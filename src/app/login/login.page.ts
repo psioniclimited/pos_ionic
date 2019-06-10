@@ -1,17 +1,20 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {NativeStorage} from '@ionic-native/native-storage/ngx';
 import {AuthService} from '../service/auth.service';
 import {Creds} from '../_models/Creds';
 import {Router} from '@angular/router';
-import {LoadingController, NavController} from '@ionic/angular';
+import {AlertController, LoadingController, NavController} from '@ionic/angular';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.page.html',
     styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage implements OnInit, OnDestroy {
+    private onDestroy$: Subject<void> = new Subject<void>();
     loginForm: FormGroup;
     token = '';
 
@@ -19,7 +22,8 @@ export class LoginPage implements OnInit {
                 private storage: NativeStorage,
                 private router: Router,
                 private navCtrl: NavController,
-                private loadingController: LoadingController) {
+                private loadingController: LoadingController,
+                private alertController: AlertController) {
     }
 
     ngOnInit() {
@@ -52,15 +56,44 @@ export class LoginPage implements OnInit {
                 this.loginForm.value.password
             );
             await loading.present();
-            await this.authenticationService.login(creds).then(data => {
+            await this.authenticationService.login(creds).then(async (data) => {
                 console.log(data);
-            });
-            this.authenticationService.authenticationState.subscribe(async (state) => {
-                if (state) {
-                    await loading.dismiss();
+                await loading.dismiss();
+                if (data === -1) {
+                    const alert = await this.alertController.create({
+                        header: 'Login Error',
+                        message: 'Sorry server is down, please try again later.',
+                        buttons: ['OK']
+                    });
+                    await alert.present();
+                } else if (data === 401) {
+                    const alert = await this.alertController.create({
+                        header: 'Login Error',
+                        message: 'Invalid Credentials.',
+                        buttons: ['OK']
+                    });
+                    await alert.present();
+                } else {
                     this.navCtrl.navigateRoot(['menu']);
                 }
             });
+            // this.authenticationService.authenticationState.pipe(takeUntil(this.onDestroy$))
+            //     .subscribe(async (state) => {
+            //     if (state) {
+            //         await loading.dismiss();
+            //         this.navCtrl.navigateRoot(['menu']);
+            //     } else {
+            //         await loading.dismiss();
+            //         console.log('server close testing =====');
+            //         console.log(state);
+            //         const alert = await this.alertController.create({
+            //             header: 'Login Error',
+            //             message: 'Sorry Could not login, please try again later.',
+            //             buttons: ['OK']
+            //         });
+            //         await alert.present();
+            //     }
+            // });
         }
     }
 
@@ -69,6 +102,10 @@ export class LoginPage implements OnInit {
             console.log(val);
             this.token = val;
         });
+    }
+
+    public ngOnDestroy(): void {
+        this.onDestroy$.next();
     }
 
 }

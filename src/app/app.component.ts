@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
 
-import {Platform} from '@ionic/angular';
+import {NavController, Platform} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {DatabaseService} from './service/database.service';
 import {BluetoothPrinterService} from './bluetooth-printer.service';
+import {AuthService} from './service/auth.service';
 
 @Component({
     selector: 'app-root',
@@ -15,7 +16,9 @@ export class AppComponent {
         private platform: Platform,
         private splashScreen: SplashScreen,
         private statusBar: StatusBar,
+        private navCtrl: NavController,
         private bluetoothPrinterService: BluetoothPrinterService,
+        private authService: AuthService
     ) {
         this.initializeApp();
     }
@@ -25,6 +28,11 @@ export class AppComponent {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
             await this.bluetoothPrinterService.connectPrinter();
+            this.authService.getToken().then(authenticated => {
+                if (authenticated) {
+                    this.navCtrl.navigateRoot(['menu']);
+                }
+            });
         });
     }
 }

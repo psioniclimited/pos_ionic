@@ -11,7 +11,7 @@ import {ENV} from '../_config/config';
 })
 export class AuthService {
     authenticationState = new BehaviorSubject(false);
-    apiUrl = ENV.API_ENDPOINT + 'user/login';
+    apiUrl = ENV.API_ENDPOINT + 'mobileapi/login';
 
     constructor(private http: HTTP, private storage: NativeStorage, private plt: Platform) {
         this.plt.ready().then(() => {
@@ -28,8 +28,10 @@ export class AuthService {
             return response;
         })
             .catch(error => {
+                this.authenticationState.next(false);
                 console.log('server error');
                 console.log(error);
+                return error.status;
             });
     }
 
