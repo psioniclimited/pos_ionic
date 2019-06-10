@@ -60,24 +60,24 @@ export class SyncService {
                 }
                 // if data sent delete data
             } else {
-                if (this.orderListCollection) {
-                    // reset auto increment
+                if (this.orderListCollection && lastOderId > 900) {
+                    await this.resetOrderDetails();
+                    await this.resetOrders();
                 }
                 console.log('sync done =======');
                 break;
             }
-
         }
     }
 
     private async getOrders(orderId) {
-        console.log('in the getOrder');
         this.orderCollection.splice(0, this.orderCollection.length);
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM orders where id > ' + orderId + ' LIMIT 20';
             this.db.executeSql(sql, [])
                 .then(async (data) => {
                     if (data.rows.length > 0) {
+                        this.orderListCollection = true;
                         for (let i = 0; i < data.rows.length; i++) {
                             const order = new Order(
                                 data.rows.item(i).date,
@@ -94,6 +94,8 @@ export class SyncService {
                             await this.getOrderDetails(order);
                             this.orderCollection.push(order);
                         }
+                    } else {
+                        this.orderListCollection = false;
                     }
                     resolve(this.orderCollection.length);
                 }, (error) => {
@@ -195,6 +197,28 @@ export class SyncService {
                 resolve(data);
             }).catch((error) => {
                 console.log(error);
+                reject(error);
+            });
+        });
+    }
+
+    private async resetOrderDetails() {
+        const sql = 'DELETE FROM SQLITE_SEQUENCE WHERE NAME = ?';
+        return new Promise((resolve, reject) => {
+            this.db.executeSql(sql, ['order_details']).then((data) => {
+                resolve(data);
+            }, (error) => {
+                reject(error);
+            });
+        });
+    }
+
+    private async resetOrders() {
+        const sql = 'DELETE FROM SQLITE_SEQUENCE WHERE NAME = ?';
+        return new Promise((resolve, reject) => {
+            this.db.executeSql(sql, ['orders']).then((data) => {
+                resolve(data);
+            }, (error) => {
                 reject(error);
             });
         });
