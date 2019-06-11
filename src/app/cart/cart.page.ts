@@ -163,7 +163,7 @@ export class CartPage implements OnInit {
                 // print header
                 let printData = '\x1B\x21\x30   OVEN FRESH \nTOKEN NUMBER: ' + this.tokenNumber + '\n';
                 printData += '\x1B\x21\x08';
-                printData += 'Date: ' + moment
+                // printData += 'Date: ' + moment
                 printData += 'Item';
                 for (let i = 4; i < 22; i++) {
                     printData += ' ';
