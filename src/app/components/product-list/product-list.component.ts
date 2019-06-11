@@ -4,6 +4,7 @@ import {ProductService} from '../../service/product.service';
 import {ProductSelectionModalPage} from '../../product-selection-modal/product-selection-modal.page';
 import {Product} from '../../_models/product';
 import {OrderService} from '../../service/order.service';
+import {UpdateService} from '../../service/update.service';
 
 @Component({
     selector: 'app-product-list',
@@ -18,7 +19,8 @@ export class ProductListComponent implements OnInit {
 
     constructor(private productService: ProductService,
                 private modalController: ModalController,
-                private orderPervice: OrderService) {
+                private orderService: OrderService,
+                private updateService: UpdateService) {
     }
 
     async ngOnInit() {
@@ -32,8 +34,16 @@ export class ProductListComponent implements OnInit {
                 console.log(error);
             });
         });
-        this.orderPervice.total.subscribe((total) => {
+        this.orderService.total.subscribe((total) => {
             this.total = total;
+        });
+
+        this.updateService.isUpdated.subscribe(async (updateResponse) => {
+            await this.productService.getProducts(this.categoryId).then((res) => {
+                this.productList = res;
+            }).catch((error) => {
+                console.log(error);
+            });
         });
     }
 

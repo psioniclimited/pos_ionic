@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CategoryService} from '../../service/category.service';
 import {Category} from '../../_models/category';
 import {ProductService} from '../../service/product.service';
+import {UpdateService} from '../../service/update.service';
 
 @Component({
     selector: 'app-category-list',
@@ -12,15 +13,19 @@ export class CategoryListComponent implements OnInit {
     public categories: Category[];
 
     constructor(private categoryService: CategoryService,
-                private productService: ProductService) {
+                private productService: ProductService,
+                private updateService: UpdateService) {
     }
 
     async ngOnInit() {
-        await this.categoryService.queryCategories().then((data: any) => {
-            this.categories = data;
-        }).catch((error) => {
-            console.log(error);
+        this.updateService.isUpdated.subscribe(async (res) => {
+            await this.categoryService.queryCategories().then((data: any) => {
+                this.categories = data;
+            }).catch((error) => {
+                console.log(error);
+            });
         });
+
     }
 
     selectCategory(data) {

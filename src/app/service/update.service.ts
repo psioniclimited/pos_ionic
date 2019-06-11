@@ -5,6 +5,7 @@ import {SQLite, SQLiteObject} from '@ionic-native/sqlite/ngx';
 import {ENV} from '../_config/config';
 import {AuthService} from './auth.service';
 import {HTTP} from '@ionic-native/http/ngx';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -12,6 +13,7 @@ import {HTTP} from '@ionic-native/http/ngx';
 export class UpdateService {
     private db: SQLiteObject;
     private isOpen: boolean;
+    isUpdated = new BehaviorSubject(false);
     // need to change this url
     private categoryUrl = ENV.API_ENDPOINT + '/category';
     private productUrl = ENV.API_ENDPOINT + '/product';

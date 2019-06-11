@@ -4,6 +4,7 @@ import {AlertController, LoadingController, NavController} from '@ionic/angular'
 import {BluetoothPrinterService} from '../bluetooth-printer.service';
 import {SyncService} from '../service/sync.service';
 import {Router} from '@angular/router';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
     selector: 'app-menu',
@@ -57,18 +58,30 @@ export class MenuPage implements OnInit {
                 }, {
                     text: 'Okay',
                     handler: (() => {
-                        this.updateService.index().then(() => {
-                            console.log('update done ====');
-                        }).catch((error) => {
-                            console.log('updating error');
-                            console.log(error);
-                        });
+                        this.updateDatabase();
                     })
                 }
             ]
         });
 
         await alert.present();
+    }
+
+    async updateDatabase() {
+        console.log('in the menu update method');
+        const loading = await this.loadingController.create({
+            message: 'Updating',
+        });
+        await loading.present();
+        await this.updateService.index().then(async () => {
+            console.log('update done ====');
+            await loading.dismiss();
+            this.updateService.isUpdated.next(true);
+        }).catch(async (error) => {
+            console.log('updating error');
+            console.log(error);
+            await loading.dismiss();
+        });
     }
 
     async connectPrinter() {
