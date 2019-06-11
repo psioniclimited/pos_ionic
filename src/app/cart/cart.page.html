@@ -53,7 +53,7 @@
         <ion-button slot="end" color="primary" [disabled]="!order" (click)="confirmOrder()">Confirm Order</ion-button>
     </ion-toolbar>
     <ion-toolbar *ngIf="orderSubmit">
-        <ion-button slot="start" color="primary"  (click)="printReceipt()">Print Receipt</ion-button>
-        <ion-button slot="end" color="primary" (click)="orderDone()">Done</ion-button>
+        <ion-button slot="start" color="primary" (click)="orderDone()">Done</ion-button>
+        <ion-button slot="end" color="primary"  (click)="printReceipt()">Print Receipt</ion-button>
     </ion-toolbar>
 </ion-footer>

@@ -22,6 +22,7 @@ export class CartPage implements OnInit {
     grandTotal: number;
     client: Client;
     orderSubmit = false;
+    tokenNumber: any;
 
     constructor(private orderService: OrderService,
                 private clientService: ClientService,
@@ -124,7 +125,9 @@ export class CartPage implements OnInit {
             await this.orderService.createOrder().then((orderId) => {
                 this.orderSubmit = true;
                 this.bluetoothSerial.isConnected().then((data) => {
-                    this.bluetoothSerial.write('\x1B\x21\x30TOKEN NUMBER: ' + orderId + ' \n\n\n\n').then();
+                    this.tokenNumber = orderId;
+                    this.bluetoothSerial.write('\x1B\x21\x30   OVEN FRESH\nTOKEN NUMBER: ' + orderId + ' \n\n\n\n').then();
+                    // this.bluetoothSerial.write('TOKEN NUMBER: ' + orderId + ' \n').then();
                 });
             }).catch((error) => {
                 console.log(error);
@@ -158,7 +161,9 @@ export class CartPage implements OnInit {
     async printReceipt() {
         this.bluetoothSerial.isConnected().then((data) => {
                 // print header
-                let printData = '\x1B\x21\x08';
+                let printData = '\x1B\x21\x30   OVEN FRESH \nTOKEN NUMBER: ' + this.tokenNumber + '\n';
+                printData += '\x1B\x21\x08';
+                printData += 'Date: ' + moment
                 printData += 'Item';
                 for (let i = 4; i < 22; i++) {
                     printData += ' ';
@@ -170,11 +175,14 @@ export class CartPage implements OnInit {
                 _.forEach(this.order.orderDetails, (value) => {
                     printData += value.product.name;
                     const productNameLength = value.product.name.length;
-                    for (let i = productNameLength; i < 24; i++) {
+                    for (let i = productNameLength; i < 22; i++) {
                         printData += ' ';
                     }
                     // make space dynamic
-                    printData += value.quantity + '  ';
+                    printData += value.quantity;
+                    for (let i = value.quantity.toString().length; i < 5; i++) {
+                        printData += ' ';
+                    }
                     if (value.option) {
                         printData += value.option.price * value.quantity + '\n';
                         printData += value.option.type + '\n';
@@ -188,21 +196,21 @@ export class CartPage implements OnInit {
                 printData += '\n';
                 // print footer
                 const subTotalText = 'Subtotal: ' + this.order.total;
-                for (let i = subTotalText.length; i < 31; i++) {
+                for (let i = subTotalText.length; i < 30; i++) {
                     printData += ' ';
                 }
                 printData += subTotalText + '\n';
                 const discountText = 'Discount: ' + this.order.discount + '%';
-                for (let i = discountText.length; i < 29; i++) {
+                for (let i = discountText.length; i < 30; i++) {
                     printData += ' ';
                 }
                 printData += discountText + '\n';
                 const total = this.order.total - (this.order.total * this.order.discount) / 100;
                 const totalText = 'Total: ' + total;
-                for (let i = totalText.length; i < 31; i++) {
+                for (let i = totalText.length; i < 30; i++) {
                     printData += ' ';
                 }
-                printData += totalText + '\n';
+                printData += totalText + '\n\n\n';
                 this.bluetoothSerial.write(printData).then();
             }
         );
