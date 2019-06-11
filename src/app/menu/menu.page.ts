@@ -43,7 +43,6 @@ export class MenuPage implements OnInit {
     }
 
     async update() {
-        console.log('update click');
         const alert = await this.alertController.create({
             header: 'Update',
             message: 'Are you sure you want to <strong>Update</strong>!!!',
@@ -95,6 +94,22 @@ export class MenuPage implements OnInit {
         await loading.present();
         await this.syncService.syncData();
         loading.dismiss();
+        const alert = await this.alertController.create({
+            header: 'Sync Completed',
+            message: 'synchronization Successful',
+            buttons: [
+                {
+                    text: 'Okay',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: (blah) => {
+                        console.log('Confirm Cancel: blah');
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
     }
 
 }

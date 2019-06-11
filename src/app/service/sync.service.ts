@@ -60,7 +60,7 @@ export class SyncService {
                 }
                 // if data sent delete data
             } else {
-                if (this.orderListCollection && lastOderId > 900) {
+                if (this.orderListCollection && lastOderId > 20) {
                     await this.resetOrderDetails();
                     await this.resetOrders();
                 }
