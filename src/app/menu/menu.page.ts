@@ -23,7 +23,7 @@ export class MenuPage implements OnInit {
         {
             title: 'Order History',
             url: '/menu/orderHistory',
-            icon: 'home'
+            icon: 'archive'
         }
     ];
 
