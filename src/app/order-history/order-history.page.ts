@@ -56,7 +56,7 @@ export class OrderHistoryPage implements OnInit {
     public async showOrderDetail(index: number) {
         const modal = await this.modalController.create({
             component: OrderDetailModalPage,
-            componentProps: {orderCollection: this.orderCollection[index]}
+            componentProps: {order: this.orderCollection[index]}
         });
         return await modal.present();
     }

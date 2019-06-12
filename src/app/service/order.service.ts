@@ -285,7 +285,7 @@ export class OrderService {
             'options.price as optionPrice ' +
             'FROM order_details ' +
             'JOIN products ON products.id = order_details.product_id ' +
-            'LEFT JOIN options ON options.product_id = products.id ' +
+            'LEFT JOIN options ON options.id = order_details.option_id ' +
             'WHERE order_details.order_id = ' + orderId;
 
         return new Promise((resolve, reject) => {

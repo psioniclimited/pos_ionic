@@ -8,7 +8,7 @@ import {OrderService} from '../../service/order.service';
     styleUrls: ['./order-detail-modal.page.scss'],
 })
 export class OrderDetailModalPage implements OnInit {
-    @Input() orderCollection: any;
+    @Input() order: any;
     orderDetails: any;
 
     constructor(private modalController: ModalController,
@@ -16,8 +16,7 @@ export class OrderDetailModalPage implements OnInit {
     }
 
     async ngOnInit() {
-        console.log(this.orderCollection);
-        await this.orderService.getOrderDetails(this.orderCollection.id).then((data) => {
+        await this.orderService.getOrderDetails(this.order.id).then((data) => {
         this.orderDetails = data;
         console.log(this.orderDetails);
         }).catch((error) => {
