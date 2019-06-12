@@ -6,6 +6,7 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {DatabaseService} from './service/database.service';
 import {BluetoothPrinterService} from './bluetooth-printer.service';
 import {AuthService} from './service/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-root',
@@ -18,7 +19,8 @@ export class AppComponent {
         private statusBar: StatusBar,
         private navCtrl: NavController,
         private bluetoothPrinterService: BluetoothPrinterService,
-        private authService: AuthService
+        private authService: AuthService,
+        private router: Router
     ) {
         this.initializeApp();
     }
@@ -30,7 +32,7 @@ export class AppComponent {
             await this.bluetoothPrinterService.connectPrinter();
             this.authService.getToken().then(authenticated => {
                 if (authenticated) {
-                    this.navCtrl.navigateRoot(['menu']);
+                    this.router.navigateByUrl('menu');
                 }
             });
         });

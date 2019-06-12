@@ -74,7 +74,8 @@ export class LoginPage implements OnInit, OnDestroy {
                     });
                     await alert.present();
                 } else {
-                    this.navCtrl.navigateRoot(['menu']);
+                    // this.navCtrl.navigateRoot(['menu']);
+                    this.router.navigateByUrl('menu');
                 }
             });
             // this.authenticationService.authenticationState.pipe(takeUntil(this.onDestroy$))
