@@ -5,6 +5,7 @@ import {BluetoothPrinterService} from '../bluetooth-printer.service';
 import {SyncService} from '../service/sync.service';
 import {Router} from '@angular/router';
 import {BehaviorSubject} from 'rxjs';
+import {AuthService} from '../service/auth.service';
 
 @Component({
     selector: 'app-menu',
@@ -33,7 +34,8 @@ export class MenuPage implements OnInit {
                 private loadingController: LoadingController,
                 private syncService: SyncService,
                 private router: Router,
-                private navCtrl: NavController) {
+                private navCtrl: NavController,
+                private authService: AuthService) {
     }
 
     ngOnInit() {
@@ -80,6 +82,29 @@ export class MenuPage implements OnInit {
             console.log('updating error');
             console.log(error);
             await loading.dismiss();
+            if (error.status === 401) {
+                // remove the token
+                await this.authService.removeToken();
+                const token = this.authService.getToken();
+                console.log('token =======');
+                console.log(token);
+                const alert = await this.alertController.create({
+                    header: 'Token Expired',
+                    message: 'Your token has been expired, Please login again',
+                    buttons: [
+                        {
+                            text: 'Okay',
+                            role: 'cancel',
+                            cssClass: 'secondary',
+                            handler: (blah) => {
+                                this.router.navigateByUrl('login');
+                            }
+                        }
+                    ]
+                });
+
+                await alert.present();
+            }
         });
     }
 

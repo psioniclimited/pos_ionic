@@ -47,6 +47,14 @@ export class AuthService {
         return this.storage.getItem('TOKEN');
     }
 
+    async removeToken() {
+        await this.storage.clear().then(() => {
+            console.log('storage clear ====');
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
     isAuthenticated() {
         return this.authenticationState.value;
     }

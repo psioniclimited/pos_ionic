@@ -75,6 +75,7 @@ export class LoginPage implements OnInit, OnDestroy {
                     await alert.present();
                 } else {
                     // this.navCtrl.navigateRoot(['menu']);
+                    console.log(this.authenticationService.getToken());
                     this.router.navigateByUrl('menu');
                 }
             });
