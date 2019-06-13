@@ -15,16 +15,14 @@ export class AuthService {
 
     constructor(private http: HTTP, private storage: NativeStorage, private plt: Platform) {
         this.plt.ready().then(() => {
-            this.checkToken();
+            // this.checkToken();
         });
     }
 
     login(creds: Creds): any {
-        return this.http.post(this.apiUrl, creds, {}).then(data => {
+        return this.http.post(this.apiUrl, creds, {}).then(async (data) => {
             const response = JSON.parse(data.data);
-            this.storage.setItem('TOKEN', response.token).then(() => {
-                this.authenticationState.next(true);
-            });
+            await this.storeToken(response);
             return response;
         })
             .catch(error => {
@@ -43,16 +41,33 @@ export class AuthService {
         });
     }
 
-    getToken() {
-        return this.storage.getItem('TOKEN');
-    }
-
-    async removeToken() {
-        await this.storage.clear().then(() => {
-            console.log('storage clear ====');
+    async storeToken(token) {
+        await this.storage.setItem('TOKEN', token).then((res) => {
+            console.log('token stored');
+            console.log(res);
+            this.authenticationState.next(true);
         }).catch((error) => {
             console.log(error);
         });
+    }
+
+    async getToken() {
+        return await this.storage.getItem('TOKEN');
+    }
+
+    async removeToken() {
+        await this.storage.remove('TOKEN').then((res) => {
+            console.log('token removed');
+        }).catch((error) => {
+            console.log(error);
+        });
+
+        await this.storage.keys().then((res) => {
+            console.log(res);
+        }).catch((error) => {
+            console.log(error);
+        });
+
     }
 
     isAuthenticated() {

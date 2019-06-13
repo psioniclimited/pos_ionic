@@ -79,15 +79,10 @@ export class MenuPage implements OnInit {
             await loading.dismiss();
             this.updateService.isUpdated.next(true);
         }).catch(async (error) => {
-            console.log('updating error');
-            console.log(error);
             await loading.dismiss();
             if (error.status === 401) {
                 // remove the token
                 await this.authService.removeToken();
-                const token = this.authService.getToken();
-                console.log('token =======');
-                console.log(token);
                 const alert = await this.alertController.create({
                     header: 'Token Expired',
                     message: 'Your token has been expired, Please login again',
@@ -133,7 +128,6 @@ export class MenuPage implements OnInit {
                 }
             ]
         });
-
         await alert.present();
     }
 

@@ -34,6 +34,9 @@ export class AppComponent {
                 if (authenticated) {
                     this.router.navigateByUrl('menu');
                 }
+            }).catch((error) => {
+                console.log('native storage error');
+                console.log(error);
             });
         });
     }

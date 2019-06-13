@@ -6,6 +6,7 @@ import {ENV} from '../_config/config';
 import {AuthService} from './auth.service';
 import {HTTP} from '@ionic-native/http/ngx';
 import {BehaviorSubject} from 'rxjs';
+import {NativeStorage} from '@ionic-native/native-storage/ngx';
 
 @Injectable({
     providedIn: 'root'
@@ -25,7 +26,8 @@ export class UpdateService {
                 private sqlStorage: SQLite,
                 private authService: AuthService,
                 private http: HTTP,
-                private databaseService: DatabaseService) {
+                private databaseService: DatabaseService,
+                private storage: NativeStorage) {
 
         this.platform.ready().then(() => {
 
@@ -39,12 +41,14 @@ export class UpdateService {
 
                 });
             }
-
         });
-        this.getToken();
     }
 
     public async index() {
+        await this.getToken().catch((error) => {
+            console.log('token fetching error');
+            console.log(error);
+        });
         await this.databaseService.unseed().catch((error) => {
             console.log(error);
         });
@@ -121,6 +125,8 @@ export class UpdateService {
 
     private async fetchCategory(params: any, headers: any) {
         return new Promise((resolve, reject) => {
+            console.log('headers');
+            console.log(headers);
             this.http.get(this.categoryUrl, params, headers).then(async (data) => {
                 const categories = JSON.parse(data.data);
                 for (let i = 0; i < categories.data.length; i++) {
@@ -286,11 +292,10 @@ export class UpdateService {
         }));
     }
 
-    private getToken() {
-        this.authService.getToken().then((data) => {
-            this.token = data;
+    private async getToken() {
+        this.storage.getItem('TOKEN').then((res) => {
+            this.token = res.token;
         }).catch((error) => {
-            console.log('token fetch error');
             console.log(error);
         });
     }

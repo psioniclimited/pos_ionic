@@ -25,11 +25,11 @@ export class SyncService {
                 private platform: Platform) {
 
         this.platform.ready().then(async () => {
-            await this.getToken();
         });
     }
 
     async syncData() {
+        await this.getToken();
         this.orderCollection = [];
         this.orderListCollection = false;
         await this.connect();
