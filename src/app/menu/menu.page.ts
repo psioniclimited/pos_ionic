@@ -112,23 +112,46 @@ export class MenuPage implements OnInit {
             message: 'Syncing'
         });
         await loading.present();
-        await this.syncService.syncData();
-        loading.dismiss();
-        const alert = await this.alertController.create({
-            header: 'Sync Completed',
-            message: 'synchronization Successful',
-            buttons: [
-                {
-                    text: 'Okay',
-                    role: 'cancel',
-                    cssClass: 'secondary',
-                    handler: (blah) => {
-                        console.log('Confirm Cancel: blah');
+        await this.syncService.syncData().then(async () => {
+            await loading.dismiss();
+            const alert = await this.alertController.create({
+                header: 'Sync Completed',
+                message: 'synchronization Successful',
+                buttons: [
+                    {
+                        text: 'Okay',
+                        role: 'cancel',
+                        cssClass: 'secondary',
+                        handler: (blah) => {
+                            console.log('Confirm Cancel: blah');
+                        }
                     }
-                }
-            ]
+                ]
+            });
+            await alert.present();
+        }).catch(async (error) => {
+            await loading.dismiss();
+            if (error.status === 401) {
+                // remove the token
+                await this.authService.removeToken();
+                const syncAlert = await this.alertController.create({
+                    header: 'Token Expired',
+                    message: 'Your token has been expired, Please login again',
+                    buttons: [
+                        {
+                            text: 'Okay',
+                            role: 'cancel',
+                            cssClass: 'secondary',
+                            handler: (blah) => {
+                                this.router.navigateByUrl('login');
+                            }
+                        }
+                    ]
+                });
+
+                await syncAlert.present();
+            }
         });
-        await alert.present();
     }
 
 }

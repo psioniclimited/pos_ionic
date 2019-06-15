@@ -6,6 +6,7 @@ import {ENV} from '../_config/config';
 import {AuthService} from './auth.service';
 import {HTTP} from '@ionic-native/http/ngx';
 import {Platform} from '@ionic/angular';
+import {NativeStorage} from '@ionic-native/native-storage/ngx';
 
 @Injectable({
     providedIn: 'root'
@@ -22,7 +23,8 @@ export class SyncService {
     constructor(private sqlStorage: SQLite,
                 private authService: AuthService,
                 private http: HTTP,
-                private platform: Platform) {
+                private platform: Platform,
+                private storage: NativeStorage) {
 
         this.platform.ready().then(async () => {
         });
@@ -45,9 +47,7 @@ export class SyncService {
                 length = data;
             });
             if (length !== 0) {
-                const isDataSent = await this.sendOrderCollectionTOServer().then().catch((error) => {
-                    console.log(error);
-                });
+                const isDataSent = await this.sendOrderCollectionTOServer();
                 if (isDataSent) {
                     for (let i = 0; i < this.orderCollection.length; i++) {
                         console.log('deleting order details');
@@ -150,7 +150,7 @@ export class SyncService {
                 this.serverErrorCode = error.status;
                 console.log('server error');
                 console.log(error);
-                reject(false);
+                reject(error);
             });
         });
     }
@@ -169,10 +169,9 @@ export class SyncService {
     }
 
     private async getToken() {
-        await this.authService.getToken().then((data) => {
-            this.token = data;
+        this.storage.getItem('TOKEN').then((res) => {
+            this.token = res.token;
         }).catch((error) => {
-            console.log('token fetch error');
             console.log(error);
         });
     }
