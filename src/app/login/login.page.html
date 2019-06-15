@@ -1,14 +1,19 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>POS System</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <ion-input placeholder="Enter Email" formControlName="email"></ion-input>
-    <ion-input type="password" placeholder="Enter Password" formControlName="password"></ion-input>
-    <ion-button type="submit" color="primary">Login</ion-button>
-  </form>
-  <ion-button (click)="showToken()">Login</ion-button>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input placeholder="Enter Email" formControlName="email"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password" placeholder="Enter Password" formControlName="password"></ion-input>
+        </ion-item>
+        <ion-button type="submit" expand="full" color="primary">Login</ion-button>
+    </form>
 </ion-content>
