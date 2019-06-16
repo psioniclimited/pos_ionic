@@ -164,7 +164,7 @@ export class CartPage implements OnInit {
                 // print header
                 let printData = '\x1B\x21\x30   OVEN FRESH \nTOKEN NUMBER: ' + this.tokenNumber + '\n';
                 printData += '\x1B\x21\x00';
-                printData += 'Address: House#09, Road#12, Sector#3, Uttara, Dhaka' + '\n';
+                printData += 'House#6, Road#2, Sector#3, Uttara, Dhaka' + '\n';
                 printData += 'Name: ' + this.order.client.name + '\n';
                 printData += 'Date: ' + this.order.date + '\n';
                 printData += '\x1B\x21\x08';

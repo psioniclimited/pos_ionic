@@ -38,9 +38,9 @@ export class ProductService {
         const products: Product[] = [];
         let options: Option[];
         if (categoryId === '0') {
-            sql = 'SELECT * FROM products ORDER BY id';
+            sql = 'SELECT * FROM products ORDER BY category_id';
         } else {
-            sql = 'SELECT * FROM products WHERE category_id = ' + categoryId + ' ORDER BY id';
+            sql = 'SELECT * FROM products WHERE category_id = ' + categoryId + ' ORDER BY category_id';
         }
         return new Promise((resolve, reject) => {
             this.db.executeSql(sql, []).then(async (data) => {
