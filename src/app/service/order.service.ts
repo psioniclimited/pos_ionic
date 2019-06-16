@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Order} from '../_models/order';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import {BehaviorSubject} from 'rxjs';
 import {SQLite, SQLiteObject} from '@ionic-native/sqlite/ngx';
 import {Client} from '../_models/client';
@@ -26,7 +27,9 @@ export class OrderService {
     setOrder(order: Order) {
         this.order = order;
         if (this.order) {
-            order.date = new Date().toLocaleDateString();
+            // order.date = new Date().toLocaleDateString();
+            // order.date += ' ' + new Date().getHours() + ' ' + new Date().getMinutes() + ' ' + new Date().getSeconds();
+            order.date = moment().format('YYYY-MM-DD HH:mm:ss').toString();
             order.total = this.calculateTotal();
             this.setGrandTotal();
             this.setTotal();

@@ -128,7 +128,7 @@ export class DatabaseService {
             'client_id INTEGER NOT NULL, ' +
             'total DECIMAL(15,2),' +
             'discount DECIMAL(15,2),' +
-            'date DATE,' +
+            'date DATETIME,' +
             'FOREIGN KEY (client_id) REFERENCES clients(id))';
 
         this.database.executeSql(sql, []).then().catch((error) => {
