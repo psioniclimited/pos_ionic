@@ -21,7 +21,6 @@ export class OrderHistoryPage implements OnInit {
         await this.orderService.getOrdersFromDB(0).then((data) => {
             this.orderCollection = data;
         }).catch((error) => {
-            console.log('error in order fetching');
             console.log(error);
         });
     }
@@ -32,7 +31,6 @@ export class OrderHistoryPage implements OnInit {
             this.orderCollection = data;
             console.log(data);
         }).catch((error) => {
-            console.log('error in order fetching while client search');
             console.log(error);
         });
     }

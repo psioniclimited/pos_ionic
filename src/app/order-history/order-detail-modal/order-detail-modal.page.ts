@@ -10,6 +10,7 @@ import {OrderService} from '../../service/order.service';
 export class OrderDetailModalPage implements OnInit {
     @Input() order: any;
     orderDetails: any;
+    total: number;
 
     constructor(private modalController: ModalController,
                 private orderService: OrderService) {
@@ -17,8 +18,12 @@ export class OrderDetailModalPage implements OnInit {
 
     async ngOnInit() {
         await this.orderService.getOrderDetails(this.order.id).then((data) => {
-        this.orderDetails = data;
-        console.log(this.orderDetails);
+            this.orderDetails = data;
+            console.log(this.orderDetails);
+
+            const subTotal = this.order.total;
+            const discount = this.order.discount;
+            this.total = subTotal - (subTotal * discount / 100);
         }).catch((error) => {
             console.log(error);
         });
@@ -27,5 +32,6 @@ export class OrderDetailModalPage implements OnInit {
     dismiss() {
         this.modalController.dismiss().catch();
     }
+
 
 }
