@@ -186,7 +186,7 @@ export class CartPage implements OnInit {
                     if (value.option) {
                         printData += value.option.type;
                     }
-                    for (let i = productNameLength; i < 21; i++) {
+                    for (let i = productNameLength; i < 18; i++) {
                         printData += ' ';
                     }
                     // make space dynamic
