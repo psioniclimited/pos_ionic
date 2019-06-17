@@ -126,7 +126,9 @@ export class CartPage implements OnInit {
                 this.orderSubmit = true;
                 this.bluetoothSerial.isConnected().then((data) => {
                     this.tokenNumber = orderId;
-                    this.bluetoothSerial.write('\x1B\x21\x30   OVEN FRESH\nTOKEN NUMBER: ' + orderId + ' \n\n\n\n').then();
+                    this.bluetoothSerial.write('\x1B\x21\x30   OVEN FRESH\nTOKEN NUMBER: ' + orderId +
+                        '\x1B\x21\x00\nHouse#6, Road#2, Sector#3, Uttara, Dhaka \n' +
+                        'Phone: 01787765676\n\n\n').then();
                     // this.bluetoothSerial.write('TOKEN NUMBER: ' + orderId + ' \n').then();
                 });
             }).catch((error) => {
@@ -165,6 +167,7 @@ export class CartPage implements OnInit {
                 let printData = '\x1B\x21\x30   OVEN FRESH \nTOKEN NUMBER: ' + this.tokenNumber + '\n';
                 printData += '\x1B\x21\x00';
                 printData += 'House#6, Road#2, Sector#3, Uttara, Dhaka' + '\n';
+                printData += 'Phone: 01787765676' + '\n';
                 printData += 'Name: ' + this.order.client.name + '\n';
                 printData += 'Date: ' + this.order.date + '\n';
                 printData += '\x1B\x21\x08';
