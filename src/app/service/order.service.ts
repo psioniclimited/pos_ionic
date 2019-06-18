@@ -49,10 +49,8 @@ export class OrderService {
         return _.sumBy(this.order.orderDetails, (orderDetail) => {
             if (orderDetail.option) {
                 let total = orderDetail.option.price * orderDetail.quantity;
-                if (orderDetail.addon) {
-                    for (let i = 0; i < orderDetail.addon.length; i++) {
-                        total += orderDetail.addon[i].price;
-                    }
+                for (let i = 0; i < orderDetail.addon.length; i++) {
+                    total += orderDetail.addon[i].price;
                 }
                 return total;
             } else {

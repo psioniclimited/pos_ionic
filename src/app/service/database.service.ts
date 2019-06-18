@@ -33,6 +33,7 @@ export class DatabaseService {
         await this.createClient();
         await this.createOrders();
         await this.createOrderDetails();
+        await this.createOrderDetailAddon();
         this.dbReady.next(true);
     }
 
@@ -44,6 +45,7 @@ export class DatabaseService {
         await this.deleteClients();
         await this.deleteOrders();
         await this.deleteOrderDetails();
+        await this.deleteOrderDetailAddon();
     }
 
     private async createCategoriesTable() {
@@ -155,6 +157,17 @@ export class DatabaseService {
         });
     }
 
+    private async createOrderDetailAddon() {
+        const sql = 'CREATE TABLE IF NOT EXISTS order_detail_addon' +
+            '(order_detail_id INTEGER NOT NULL,' +
+            'addon_id INTEGER NOT NULL)';
+
+        this.database.executeSql(sql, []).then().catch((error) => {
+            console.log('order_detail_addon not created');
+            console.log(error);
+        });
+    }
+
     private async deleteCategories() {
         return new Promise((resolve, reject) => {
             const sql = 'DELETE FROM categories';
@@ -228,6 +241,18 @@ export class DatabaseService {
             this.database.executeSql(sql, []).then((data) => {
                 resolve(data);
             }, (error) => {
+                reject(error);
+            });
+        });
+    }
+
+    private async deleteOrderDetailAddon() {
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM order_detail_addon';
+            this.database.executeSql(sql, []).then((data) => {
+                resolve(data);
+            }, (error) => {
+                console.log('error in deleting order_detail addon');
                 reject(error);
             });
         });

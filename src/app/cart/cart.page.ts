@@ -63,11 +63,10 @@ export class CartPage implements OnInit {
         let total = 0;
         if (orderDetail.option) {
             total += orderDetail.option.price * orderDetail.quantity;
-            if (orderDetail.addon) {
-                for (let i = 0; i < orderDetail.addon.length; i++) {
-                    total += orderDetail.addon[i].price;
-                }
+            for (let i = 0; i < orderDetail.addon.length; i++) {
+                total += orderDetail.addon[i].price;
             }
+
             return total;
         }
 
