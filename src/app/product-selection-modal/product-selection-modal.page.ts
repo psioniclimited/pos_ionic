@@ -4,6 +4,7 @@ import {OrderService} from '../service/order.service';
 import {Order} from '../_models/order';
 import {OrderDetail} from '../_models/order-detail';
 import * as _ from 'lodash';
+import {Addon} from '../_models/addon';
 
 @Component({
     selector: 'app-product-selection-modal',
@@ -19,6 +20,10 @@ export class ProductSelectionModalPage implements OnInit {
     }
 
     ngOnInit() {
+    }
+
+    checkAddons(addon: Addon) {
+        console.log(addon);
     }
 
     addProduct() {
