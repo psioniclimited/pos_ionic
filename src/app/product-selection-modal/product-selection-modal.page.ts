@@ -28,9 +28,14 @@ export class ProductSelectionModalPage implements OnInit {
         this.addonList = [];
     }
 
-    checkAddons(addon: Addon) {
-        console.log(addon);
-        this.addonList.push(addon);
+    checkAddons() {
+        const selectedAddon = this.product.addons;
+        this.addonList = [];
+        for (let i = 0; i < selectedAddon.length; i++) {
+            if (selectedAddon[i].isChecked) {
+                this.addonList.push(selectedAddon[i]);
+            }
+        }
     }
 
     addProduct() {

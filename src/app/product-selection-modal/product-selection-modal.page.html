@@ -36,7 +36,7 @@
         </ion-radio-group>
     </ion-list>
     <ion-list>
-        <ion-item *ngFor="let addon of product.addons; let i = index;" (ionChange)="checkAddons(addon)">
+        <ion-item *ngFor="let addon of product.addons; let i = index;" (ionChange)="checkAddons()">
             <ion-checkbox slot="start" [(ngModel)]="addon.isChecked"></ion-checkbox>
             <ion-label>
                 <span style="float: left">{{ addon.name }}</span> <span
