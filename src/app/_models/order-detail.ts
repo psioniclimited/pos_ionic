@@ -12,10 +12,15 @@ export class OrderDetail {
     optionId: number;
 
 
-    constructor(option: Option = null, product: Product = null, total: number = 0, quantity: number = 0) {
+    constructor(option: Option = null,
+                product: Product = null,
+                total: number = 0,
+                quantity: number = 0,
+                addon: Addon[] = []) {
         this.option = option;
         this.product = product;
         this.total = total;
         this.quantity = quantity;
+        this.addon = addon;
     }
 }

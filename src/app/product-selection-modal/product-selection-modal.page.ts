@@ -15,6 +15,7 @@ export class ProductSelectionModalPage implements OnInit {
     @Input() product: any;
     selectedOption: any;
     quantity = 1;
+    addonList: Addon[];
 
     constructor(private modalController: ModalController, private orderService: OrderService) {
     }
@@ -24,10 +25,12 @@ export class ProductSelectionModalPage implements OnInit {
         for (let i = 0; i < selectedAddon.length; i++) {
             selectedAddon[i].isChecked = false;
         }
+        this.addonList = [];
     }
 
     checkAddons(addon: Addon) {
         console.log(addon);
+        this.addonList.push(addon);
     }
 
     addProduct() {
@@ -50,7 +53,8 @@ export class ProductSelectionModalPage implements OnInit {
                     option,
                     this.product,
                     this.selectedOption && this.selectedOption.price || null,
-                    this.quantity
+                    this.quantity,
+                    this.addonList
                 ));
                 this.orderService.setOrder(order);
             }
@@ -66,7 +70,8 @@ export class ProductSelectionModalPage implements OnInit {
             option,
             this.product,
             this.selectedOption && this.selectedOption.price || null,
-            this.quantity
+            this.quantity,
+            this.addonList
         ));
         // update total of order
         // order.total = (this.selectedOption && this.selectedOption.price) * this.quantity ||
