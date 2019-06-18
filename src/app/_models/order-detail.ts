@@ -10,6 +10,7 @@ export class OrderDetail {
     quantity: number;
     productId: number;
     optionId: number;
+    addonId: number[];
 
 
     constructor(option: Option = null,

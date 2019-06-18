@@ -123,6 +123,8 @@ export class SyncService {
                             orderDetail.productId = data.rows.item(i).product_id;
                             orderDetail.optionId = data.rows.item(i).option_id;
                             // get order details
+                            // query for order_details_addons
+                            await this.getOrderDetailAddon(data.rows.item(i).id, orderDetail);
                             orderDetailCollection.push(orderDetail);
                         }
                     }
@@ -136,11 +138,29 @@ export class SyncService {
 
     }
 
+    private async getOrderDetailAddon(orderDetailId: number, orderDetail) {
+        const addonId: number [] = [];
+        const sql = 'SELECT * FROM order_detail_addon where order_detail_id = ' + orderDetailId;
+        await this.db.executeSql(sql, []).then((data) => {
+            if (data.rows.length > 0) {
+                for (let i = 0; i < data.rows.length; i++) {
+                    console.log('fetching order detail addon');
+                    addonId.push(data.rows.item(i).addon_id);
+                }
+                orderDetail.addon = addonId;
+            }
+        }).catch((error) => {
+            console.log('error in fetching order detail addon');
+            console.log(error);
+        });
+    }
+
     private async sendOrderCollectionTOServer() {
         const headers = {
             Authorization: 'Bearer ' + this.token
         };
-
+        console.log('sending order collection to server');
+        console.log(this.orderCollection);
         return new Promise((resolve, reject) => {
             this.http.post(this.syncAPI, {data: this.orderCollection}, headers).then(async (res) => {
                 console.log('server response');
