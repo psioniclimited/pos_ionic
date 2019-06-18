@@ -20,6 +20,10 @@ export class ProductSelectionModalPage implements OnInit {
     }
 
     ngOnInit() {
+        const selectedAddon = this.product.addons;
+        for (let i = 0; i < selectedAddon.length; i++) {
+            selectedAddon[i].isChecked = false;
+        }
     }
 
     checkAddons(addon: Addon) {

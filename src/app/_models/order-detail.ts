@@ -1,9 +1,11 @@
 import {Option} from './option';
 import {Product} from './product';
+import {Addon} from './addon';
 
 export class OrderDetail {
     option: Option;
     product: Product;
+    addon: Addon[];
     total: number;
     quantity: number;
     productId: number;

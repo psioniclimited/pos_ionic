@@ -93,6 +93,7 @@ export class ProductService {
                                         );
                                         addon.productId = res.rows.item(j).product_id;
                                         addon.id = res.rows.item(j).id;
+                                        addon.isChecked = false;
                                         addons.push(addon);
                                     }
                                 }
