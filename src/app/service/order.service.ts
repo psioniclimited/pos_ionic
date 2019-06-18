@@ -137,6 +137,12 @@ export class OrderService {
                             this.order.orderDetails[i].product,
                             this.order.orderDetails[i].quantity
                         );
+                        const lastOrderDetailId = await this.getLastOrderDetailId();
+                        // storing order_detail_addons
+                        for (let j = 0; j < this.order.orderDetails[i].addon.length; j++) {
+                            await this.storeOrderDetailAddon(lastOrderDetailId, this.order.orderDetails[i].addon[j]);
+                        }
+
                     } else {
                         // store only product id
                         console.log('no option');
@@ -150,6 +156,7 @@ export class OrderService {
                 resolve(lastOrderId);
             }).catch((error) => {
                 console.log(error);
+                reject(error);
             });
         });
 
@@ -194,6 +201,23 @@ export class OrderService {
         });
     }
 
+    private async getLastOrderDetailId() {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT MAX(id) as id FROM order_details';
+            this.db.executeSql(sql, [])
+                .then((data) => {
+                    // if (data.rows.length > 0) {
+                    //     console.log('order id');
+                    //     console.log(data.rows.item(0).id);
+                    // }
+                    resolve(data.rows.item(0).id);
+                }, (error) => {
+                    console.log('last order id error');
+                    reject(error);
+                });
+        });
+    }
+
     private async storeOrderDetailWithOption(orderId, option, product, quantity) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO order_details (order_id, option_id, product_id, price, quantity) ' +
@@ -217,6 +241,20 @@ export class OrderService {
                     resolve(success);
                 }, (error) => {
                     console.log('order detail create error with no option');
+                    reject(error);
+                });
+        });
+    }
+
+    private async storeOrderDetailAddon(orderDetailId, addon) {
+        return new Promise((resolve, reject) => {
+            const sql = 'INSERT INTO order_detail_addon (order_detail_id, addon_id) ' +
+                'VALUES (?,?)';
+            this.db.executeSql(sql, [orderDetailId, addon.id])
+                .then((success) => {
+                    resolve(success);
+                }, (error) => {
+                    console.log('order detail addon create error with no option');
                     reject(error);
                 });
         });
