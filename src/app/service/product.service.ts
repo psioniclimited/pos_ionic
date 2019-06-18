@@ -3,6 +3,7 @@ import {SQLite, SQLiteObject} from '@ionic-native/sqlite/ngx';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {Product} from '../_models/product';
 import {Option} from '../_models/option';
+import {Addon} from '../_models/addon';
 
 @Injectable({
     providedIn: 'root'
@@ -37,6 +38,7 @@ export class ProductService {
         let sql;
         const products: Product[] = [];
         let options: Option[];
+        let addons: Addon[];
         if (categoryId === '0') {
             sql = 'SELECT * FROM products ORDER BY category_id';
         } else {
@@ -78,6 +80,28 @@ export class ProductService {
                             });
                             product.options = options;
                         }
+                        if (product.hasAddons === 1) {
+                            // query addons
+                            addons = [];
+                            const queryOptions = 'SELECT * FROM addons WHERE product_id = ' + product.id;
+                            await this.db.executeSql(queryOptions, []).then((res) => {
+                                if (res.rows.length > 0) {
+                                    for (let j = 0; j < res.rows.length; j++) {
+                                        const addon = new Addon(
+                                            res.rows.item(j).name,
+                                            res.rows.item(j).price,
+                                        );
+                                        addon.productId = res.rows.item(j).product_id;
+                                        addon.id = res.rows.item(j).id;
+                                        addons.push(addon);
+                                    }
+                                }
+                            }).catch((error) => {
+                                // console.log('error in query addons');
+                                console.log(error);
+                            });
+                        }
+                        product.addons = addons;
                         products.push(product);
                     }
                 }

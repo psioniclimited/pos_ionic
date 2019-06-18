@@ -12,6 +12,7 @@ export class Product {
     hasOptions: number;
     options: Option[];
     priceTag: string;
+    addons: Addon[];
 
     constructor(
         id: number = 0,
