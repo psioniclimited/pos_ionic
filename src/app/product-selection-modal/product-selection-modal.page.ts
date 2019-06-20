@@ -50,22 +50,46 @@ export class ProductSelectionModalPage implements OnInit {
             });
             // add existing product
             if (productIndex >= 0) {
-                order.orderDetails[productIndex].quantity += this.quantity;
+                console.log('order details ========');
+                console.log(order.orderDetails[productIndex]);
+                // for (let i = 0; i < this.addonList.length; i++) {
+                //     order.orderDetails[productIndex].addon.push(this.addonList[i]);
+                // }
+                if (this.addonList.length === order.orderDetails[productIndex].addon.length) {
+                    let addonsSame = true;
+                    for (let i = 0; i < this.addonList.length; i++) {
+                        if (this.addonList[i].id !== order.orderDetails[productIndex].addon[i].id) {
+                            addonsSame = false;
+                        }
+                    }
+                    if (addonsSame) {
+                        order.orderDetails[productIndex].quantity += this.quantity;
+                    } else {
+                        this.createOrderDetail(order);
+                    }
+                } else {
+                    this.createOrderDetail(order);
+                }
+
                 this.orderService.setOrder(order);
             } else {
-                const option = this.findOption();
-                order.orderDetails.push(new OrderDetail(
-                    option,
-                    this.product,
-                    this.selectedOption && this.selectedOption.price || null,
-                    this.quantity,
-                    this.addonList
-                ));
-                this.orderService.setOrder(order);
+                this.createOrderDetail(order);
             }
             this.dismiss();
         }
         console.log(this.orderService.getOrder());
+    }
+
+    private createOrderDetail(order) {
+        const option = this.findOption();
+        order.orderDetails.push(new OrderDetail(
+            option,
+            this.product,
+            this.selectedOption && this.selectedOption.price || null,
+            this.quantity,
+            this.addonList
+        ));
+        this.orderService.setOrder(order);
     }
 
     createOrder() {

@@ -206,6 +206,24 @@ export class CartPage implements OnInit {
                     } else {
                         printData += value.product.salePrice * value.quantity + '\n';
                     }
+                    // printing addons
+                    if (value.addon.length > 0) {
+                        printData += '\x1B\x21\x08';
+                        printData += 'Addons\n';
+                        printData += '\x1B\x21\x00';
+                        for (let i = 0; i < value.addon.length; i++) {
+                            printData += value.addon[i].name + ' ';
+                            for (let j = productNameLength; j < 18; j++) {
+                                printData += ' ';
+                            }
+                            printData += value.quantity;
+                            for (let j = value.quantity.toString().length; j < 5; j++) {
+                                printData += ' ';
+                            }
+                            printData += value.addon[i].price * value.quantity + '\n';
+                        }
+                    }
+
                 });
                 for (let i = 0; i < 32; i++) {
                     printData += '-';
